@@ -25,6 +25,7 @@ public class ConsoleReader extends Observable {
             public void run() {
                 BufferedReader bufferedInput = new BufferedReader(new InputStreamReader(System.in));
                 do {
+                    //System.out.println("trying to read again..");
                     try {
                         command = bufferedInput.readLine();
                         setChanged();
@@ -32,7 +33,7 @@ public class ConsoleReader extends Observable {
                     } catch (IOException ex) {
                         System.out.println(ex);
                     } finally {
-                        System.out.println("ConsoleReader.read thread, finally...");
+                        //System.out.println("ConsoleReader.read thread, finally...");
                     }
                 } while (true);
             }

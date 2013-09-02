@@ -3,11 +3,10 @@ package telnet;
 import static java.lang.System.out;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Observable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 
-public class InputStreamReader extends Observable {
+public class InputStreamReader {
 
     private final static Logger LOG = Logger.getLogger(InputStreamReader.class.getName());
 

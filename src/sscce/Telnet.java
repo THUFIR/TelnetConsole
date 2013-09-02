@@ -41,7 +41,6 @@ public final class Telnet {
             }
         };
 
-
         Thread read = new Thread() {
 
             @Override
@@ -64,9 +63,9 @@ public final class Telnet {
         print.start();
         read.start();
     }
-
-    
+/*
     public static void main(String[] args) throws SocketException, IOException {
-    new Telnet();
+        new Telnet();
     }
+     */
 }

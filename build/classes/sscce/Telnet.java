@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 import org.apache.commons.net.telnet.TelnetClient;
 
@@ -42,7 +41,6 @@ public final class Telnet {
             }
         };
 
-
         Thread read = new Thread() {
 
             @Override
@@ -65,9 +63,9 @@ public final class Telnet {
         print.start();
         read.start();
     }
-
-    
+/*
     public static void main(String[] args) throws SocketException, IOException {
-    new Telnet();
+        new Telnet();
     }
+     */
 }

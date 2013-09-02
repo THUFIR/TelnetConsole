@@ -15,3 +15,4 @@ class Triggers extends Observable {
         return command;
     }
 }
+
