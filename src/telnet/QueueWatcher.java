@@ -1,0 +1,52 @@
+package telnet;
+
+import static java.lang.System.out;
+import java.io.IOException;
+import java.net.SocketException;
+import java.util.Observable;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Logger;
+
+public class QueueWatcher extends Observable {
+
+    private final static Logger LOG = Logger.getLogger(QueueWatcher.class.getName());
+    private static final long SLEEP_MILLS = 1000;  // not the best way to wait for more input
+    private String finalData = "";
+
+    public QueueWatcher() {
+    }
+
+    public void read(final ConcurrentLinkedQueue<Character> dataFromMUD) throws SocketException, IOException {
+        final StringBuilder currentData = new StringBuilder();
+
+        Thread makeString = new Thread() {
+
+            @Override
+            public void run() {
+                do {
+                    try {
+                        do {
+                            char ch = dataFromMUD.remove();
+                            currentData.append(ch);
+                        } while (true);
+                    } catch (java.util.NoSuchElementException nse) {
+                        try {
+                            setChanged();
+                            notifyObservers();
+                            finalData = currentData.toString();
+                            currentData.delete(0, currentData.length());
+                            Thread.sleep(SLEEP_MILLS);
+                        } catch (InterruptedException interruptedException) {
+                        }
+                    } finally {
+                    }
+                } while (true);
+            }
+        };
+        makeString.start();
+    }
+
+    String getFinalData() {
+        return finalData;
+    }
+}
