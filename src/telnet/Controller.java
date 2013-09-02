@@ -31,7 +31,6 @@ public final class Controller implements Observer {
         triggers.addObserver(this);
     }
 
-    
     private void sendCommand(String command) {
         try {
             byte b = 10;
