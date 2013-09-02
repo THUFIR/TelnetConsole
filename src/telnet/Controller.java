@@ -32,7 +32,6 @@ public final class Controller implements Observer {
 
     private void sendCommand(String command) {
         if (command != null) {
-            System.out.println("command\t\t" + command);
             try {
                 byte b = 10;
                 byte[] bytes = command.getBytes();
