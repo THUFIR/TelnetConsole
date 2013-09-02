@@ -14,6 +14,7 @@ import org.apache.commons.net.telnet.TelnetClient;
 
 public final class Controller implements Observer {
 
+    private CombatLogic c = new CombatLogic();
     private TelnetClient telnetClient = new TelnetClient();
     private InputStreamReader serverReader = new InputStreamReader();
     private ConsoleReader consoleReader = new ConsoleReader();
