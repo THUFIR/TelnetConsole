@@ -40,7 +40,6 @@ public final class Controller implements Observer {
                 out.println("byte\t" + bytes[i]);
             }
             outputStream.write(bytes);
-            outputStream.write(10);
             outputStream.flush();
         } catch (IOException | NullPointerException ex) {
             out.println("no command sent\t" + command);
@@ -72,8 +71,11 @@ public final class Controller implements Observer {
         telnetClient.connect(host, port);
         readPrintParse(telnetClient.getInputStream());
     }
-
+/*
     public static void main(String[] args) throws SocketException, IOException {
         new Controller();
     }
-}
+
+     * 
+     */
+   }
