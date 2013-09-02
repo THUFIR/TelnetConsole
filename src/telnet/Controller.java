@@ -31,24 +31,14 @@ public final class Controller implements Observer {
         triggers.addObserver(this);
     }
 
-    /*
-     *       do {
-                        byte b = 10;
-                        outputStream.write(10);
-                        outputStream.flush();
-                        String command = bufferedInput.readLine();
-                        byte[] bytes = command.getBytes();
-                        outputStream.write(bytes);
-                        outputStream.flush();
-                    } while (true);
-     */
-    
     private void sendCommand(String command) {
         out.println("Controller.command...\t" + command);
         try {
             byte b = 10;
-            outputStream.write(10);
-            outputStream.flush();
+            if ("".equals(command)) {
+                outputStream.write(10);
+                outputStream.flush();
+            }
             byte[] bytes = command.getBytes();
             outputStream.write(bytes);
             outputStream.flush();
