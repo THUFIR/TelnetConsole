@@ -31,18 +31,14 @@ public final class Controller implements Observer {
         triggers.addObserver(this);
     }
 
+    
     private void sendCommand(String command) {
-        out.println("Controller.command...\t" + command);
         try {
             byte b = 10;
-            if ("".equals(command)) {
-                outputStream.write(10);
-                outputStream.flush();
-            }
             byte[] bytes = command.getBytes();
             outputStream.write(bytes);
+            outputStream.write(10);
             outputStream.flush();
-            out.println("command sent\t" + command);
         } catch (IOException | NullPointerException ex) {
             out.println("Controller.sendCommand.no valid command\t" + command + "\t" + ex);
         }
