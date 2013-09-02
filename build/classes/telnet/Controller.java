@@ -20,7 +20,7 @@ public final class Controller implements Observer {
     private DataProcessor dataProcessor = new DataProcessor();
     private Triggers triggers = new Triggers();
     private final ConcurrentLinkedQueue<Character> telnetData = new ConcurrentLinkedQueue();
-    private OutputStream outputStream = telnetClient.getOutputStream();
+    private OutputStream outputStream;
 
     public void readPrintParse(final InputStream inputStream) throws SocketException, IOException {
         serverReader.print(inputStream, telnetData);
@@ -31,8 +31,20 @@ public final class Controller implements Observer {
         triggers.addObserver(this);
     }
 
+    /*
+     *       do {
+                        byte b = 10;
+                        outputStream.write(10);
+                        outputStream.flush();
+                        String command = bufferedInput.readLine();
+                        byte[] bytes = command.getBytes();
+                        outputStream.write(bytes);
+                        outputStream.flush();
+                    } while (true);
+     */
+    
     private void sendCommand(String command) {
-        out.println("command\t" + command);
+        out.println("Controller.command...\t" + command);
         try {
             byte b = 10;
             outputStream.write(10);
@@ -40,6 +52,7 @@ public final class Controller implements Observer {
             byte[] bytes = command.getBytes();
             outputStream.write(bytes);
             outputStream.flush();
+            out.println("command sent\t" + command);
         } catch (IOException | NullPointerException ex) {
             out.println("Controller.sendCommand.no valid command\t" + command + "\t" + ex);
         }
@@ -68,6 +81,7 @@ public final class Controller implements Observer {
         InetAddress host = InetAddress.getByName(props.getProperty("host"));
         int port = Integer.parseInt(props.getProperty("port"));
         telnetClient.connect(host, port);
+        outputStream = telnetClient.getOutputStream();
         readPrintParse(telnetClient.getInputStream());
     }
 
