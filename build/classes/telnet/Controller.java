@@ -18,7 +18,7 @@ public final class Controller implements Observer {
     private InputStreamReader serverReader = new InputStreamReader();
     private ConsoleReader consoleReader = new ConsoleReader();
     private DataProcessor dataProcessor = new DataProcessor();
-    private Triggers triggers = new Triggers();
+    private Regex triggers = new Regex();
     private final ConcurrentLinkedQueue<Character> telnetData = new ConcurrentLinkedQueue();
     private OutputStream outputStream;
 
@@ -28,18 +28,20 @@ public final class Controller implements Observer {
         consoleReader.addObserver(this);
         dataProcessor.read(telnetData);
         dataProcessor.addObserver(this);
-        triggers.addObserver(this);
     }
 
     private void sendCommand(String command) {
-        try {
-            byte b = 10;
-            byte[] bytes = command.getBytes();
-            outputStream.write(bytes);
-            outputStream.write(10);
-            outputStream.flush();
-        } catch (IOException | NullPointerException ex) {
-            out.println("Controller.sendCommand.no valid command\t" + command + "\t" + ex);
+        if (command != null) {
+            System.out.println("command\t\t" + command);
+            try {
+                byte b = 10;
+                byte[] bytes = command.getBytes();
+                outputStream.write(bytes);
+                outputStream.write(10);
+                outputStream.flush();
+            } catch (IOException | NullPointerException ex) {
+                //out.println("Controller.sendCommand.no valid command\t" + command + "\t" + ex);
+            }
         }
     }
 
@@ -49,10 +51,10 @@ public final class Controller implements Observer {
 
         if (o instanceof DataProcessor) {
             String data = dataProcessor.getFinalData();
-            if (data.length() > 2) {
-                command = triggers.parse(data);
-                sendCommand(command);
-            }
+            //out.println("data processor in update...");
+            command = triggers.parse(data);
+            sendCommand(command);
+            // out.println("sent command from update");
         }
 
         if (o instanceof ConsoleReader) {
