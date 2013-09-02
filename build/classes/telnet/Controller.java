@@ -34,14 +34,13 @@ public final class Controller implements Observer {
 
     /*
      *          byte b = 10;
-                        outputStream.write(10);
-                        outputStream.flush();
-                        String command = bufferedInput.readLine();
-                        byte[] bytes = command.getBytes();
-                        outputStream.write(bytes);
-                        outputStream.flush();
+    outputStream.write(10);
+    outputStream.flush();
+    String command = bufferedInput.readLine();
+    byte[] bytes = command.getBytes();
+    outputStream.write(bytes);
+    outputStream.flush();
      */
-    
     private void sendCommand(String command) {
         out.println("command\t\t" + command);
         try {
@@ -79,11 +78,11 @@ public final class Controller implements Observer {
         telnetClient.connect(host, port);
         readPrintParse(telnetClient.getInputStream());
     }
-/*
+
+    /*
     public static void main(String[] args) throws SocketException, IOException {
         new Controller();
-    }
-
-     * 
-     */
-   }
+    }*/
+    
+    
+}

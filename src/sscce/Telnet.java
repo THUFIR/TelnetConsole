@@ -66,7 +66,8 @@ public final class Telnet {
         read.start();
     }
 
+    
     public static void main(String[] args) throws SocketException, IOException {
-        new Telnet();
+    new Telnet();
     }
 }
