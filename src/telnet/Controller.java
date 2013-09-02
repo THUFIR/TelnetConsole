@@ -32,14 +32,22 @@ public final class Controller implements Observer {
         triggers.addObserver(this);
     }
 
+    /*
+     *          byte b = 10;
+                        outputStream.write(10);
+                        outputStream.flush();
+                        String command = bufferedInput.readLine();
+                        byte[] bytes = command.getBytes();
+                        outputStream.write(bytes);
+                        outputStream.flush();
+     */
+    
     private void sendCommand(String command) {
         out.println("command\t\t" + command);
         try {
             byte[] bytes = command.getBytes();
-            for (int i = 0; i < bytes.length; i++) {
-                out.println("byte\t" + bytes[i]);
-            }
             outputStream.write(bytes);
+            outputStream.write(10);
             outputStream.flush();
         } catch (IOException | NullPointerException ex) {
             out.println("no command sent\t" + command);
