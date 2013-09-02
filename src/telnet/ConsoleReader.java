@@ -19,21 +19,24 @@ public class ConsoleReader extends Observable {
     }
 
     public void read() {
-        Thread print = new Thread() {
+        Thread read = new Thread() {
 
             @Override
             public void run() {
-                BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-                try {
-                    do {
-                        command = in.readLine();
+                BufferedReader bufferedInput = new BufferedReader(new InputStreamReader(System.in));
+                do {
+                    try {
+                        command = bufferedInput.readLine();
                         setChanged();
                         notifyObservers();
-                    } while (true);
-                } catch (IOException ex) {
-                }
+                    } catch (IOException ex) {
+                        System.out.println(ex);
+                    } finally {
+                        System.out.println("ConsoleReader.read thread, finally...");
+                    }
+                } while (true);
             }
         };
-        print.start();
+        read.start();
     }
 }

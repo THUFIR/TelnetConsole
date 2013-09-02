@@ -28,6 +28,7 @@ public class InputStreamReader extends Observable {
                     while (255 > ch && ch >= 0) {
                         clq.add(ch);
                         ch = (char) inputStream.read();
+                        System.out.print(ch);
                     }
                 } catch (IOException ex) {
                     out.println("cannot read inputStream:\t" + ex);

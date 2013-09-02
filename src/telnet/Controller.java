@@ -32,24 +32,17 @@ public final class Controller implements Observer {
         triggers.addObserver(this);
     }
 
-    /*
-     *          byte b = 10;
-    outputStream.write(10);
-    outputStream.flush();
-    String command = bufferedInput.readLine();
-    byte[] bytes = command.getBytes();
-    outputStream.write(bytes);
-    outputStream.flush();
-     */
     private void sendCommand(String command) {
-        out.println("command\t\t" + command);
+//        out.println("command\t\t" + command);
         try {
-            byte[] bytes = command.getBytes();
-            outputStream.write(bytes);
+            byte b = 10;
             outputStream.write(10);
             outputStream.flush();
+            byte[] bytes = command.getBytes();
+            outputStream.write(bytes);
+            outputStream.flush();
         } catch (IOException | NullPointerException ex) {
-            out.println("no command sent\t" + command);
+            out.println("Controller.sendCommand.no valid command\t" + command + "\t" + ex);
         }
     }
 
@@ -59,14 +52,14 @@ public final class Controller implements Observer {
 
         if (o instanceof QueueWatcher) {
             String data = dataProcessor.getFinalData();
-            out.println("noSuchElementException...\n" + data);
+            //out.println("noSuchElementException...\n" + data);
             command = triggers.parse(data);
             sendCommand(command);
         }
 
         if (o instanceof ConsoleReader) {
             command = consoleReader.getCommand();
-            out.println("your command\t\t" + command);
+            //out.println("your command\t\t" + command);
             sendCommand(command);
         }
     }
@@ -79,10 +72,7 @@ public final class Controller implements Observer {
         readPrintParse(telnetClient.getInputStream());
     }
 
-    /*
     public static void main(String[] args) throws SocketException, IOException {
         new Controller();
-    }*/
-    
-    
+    }
 }
