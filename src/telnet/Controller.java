@@ -1,27 +1,29 @@
 package telnet;
 
-import static java.lang.System.out;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Properties;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.commons.net.telnet.TelnetClient;
 
 public final class Controller implements Observer {
 
-    private CombatLogic c = new CombatLogic();
     private TelnetClient telnetClient = new TelnetClient();
     private InputStreamReader serverReader = new InputStreamReader();
     private ConsoleReader consoleReader = new ConsoleReader();
     private DataProcessor dataProcessor = new DataProcessor();
-    private Regex triggers = new Regex();
+    private Regex regex = new Regex();
     private final ConcurrentLinkedQueue<Character> telnetData = new ConcurrentLinkedQueue();
     private OutputStream outputStream;
+    private Fight fight = new Fight();
+    private Stats s = Stats.INSTANCE;
 
     public void readPrintParse(final InputStream inputStream) throws SocketException, IOException {
         serverReader.print(inputStream, telnetData);
@@ -51,10 +53,14 @@ public final class Controller implements Observer {
 
         if (o instanceof DataProcessor) {
             String data = dataProcessor.getFinalData();
-            //out.println("data processor in update...");
-            command = triggers.parse(data);
-            sendCommand(command);
-            // out.println("sent command from update");
+            regex.parse(data);
+            Queue<String> commands = fight.getCommands();
+            Iterator<String> it = commands.iterator();
+            while (it.hasNext()) {
+                command = commands.remove();
+                sendCommand(command);
+            }
+            s.peace();
         }
 
         if (o instanceof ConsoleReader) {

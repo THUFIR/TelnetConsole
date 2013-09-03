@@ -8,11 +8,11 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class Regex {
+public class Regex {
 
     private StatsLoader s = new StatsLoader();
 
-    String parse(String telnetText) {
+    public void parse(String telnetText) {
         String command = null;
         String keyName = null;
         String keyVal = null;
@@ -41,6 +41,5 @@ class Regex {
             } catch (IllegalStateException e) {
             }
         }
-        return command;
     }
 }

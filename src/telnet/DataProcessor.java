@@ -36,7 +36,7 @@ public class DataProcessor extends Observable {
                             setChanged();
                             notifyObservers();
                             Thread.sleep(SLEEP_MILLS);
-                        } catch (InterruptedException ex) {
+                        } catch (InterruptedException | NumberFormatException ex) {
                         }
                     }
                 } while (true);
