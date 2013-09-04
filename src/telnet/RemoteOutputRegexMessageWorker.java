@@ -17,12 +17,13 @@ public class RemoteOutputRegexMessageWorker {
     public RemoteOutputRegexMessageWorker() {
     }
 
+    //Pattern p = Pattern.compile("(\\w+): (\\d+/{0,1}\\d*%{0,1})");
     public void parseWithRegex(String telnetText, ConcurrentLinkedQueue<Command> commandsQueue) {
         String command = null;
         String keyName = null;
         String keyVal = null;
         String digitsOnly = null;
-        if(telnetText.contains("You can only do this while fighting.")){
+        if (telnetText.contains("You can only do this while fighting.")) {
             characterState.setFighting(false);
         }
         if (telnetText.contains("You are fighting")) {
@@ -30,6 +31,17 @@ public class RemoteOutputRegexMessageWorker {
         }
         if (telnetText.contains("HP:")) {
             try {
+                Pattern p2 = Pattern.compile("(\\w+): (\\d+/{0,1}\\d*%{0,1})");
+                Matcher m2 = p2.matcher(telnetText);
+                String g1;
+                String g2;
+                while (m2.find()) {
+                    g1 = m2.group(1);
+                    g2 = m2.group(2);
+                    System.out.println(g1 + "\t" + g2);
+                }
+
+
                 Pattern pattern = Pattern.compile("(\\w+): (\\d+)");
                 Matcher matcher = pattern.matcher(telnetText);
                 List<Entry> stringEntries = new ArrayList<>();
