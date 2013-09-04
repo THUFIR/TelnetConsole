@@ -1,3 +1,4 @@
+
 package telnet;
 
 import java.io.IOException;
@@ -58,6 +59,7 @@ public final class Controller implements Observer {
             Iterator<String> it = commands.iterator();
             while (it.hasNext()) {
                 command = commands.remove();
+                //System.out.print("\tsending\t" + command);
                 sendCommand(command);
             }
             s.peace();

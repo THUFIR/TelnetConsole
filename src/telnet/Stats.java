@@ -130,14 +130,14 @@ public enum Stats {
                 + "\nconfuse\t" + confuse + "\n\n";
     }
 
-    void peace() {
+    public void peace() {
         backstab = false;
         heartplunge = false;
         enervate = false;
         confuse = false;
     }
-    
-    void war() {
+
+    public void war() {
         backstab = true;
         heartplunge = true;
         enervate = true;

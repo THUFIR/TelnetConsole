@@ -11,12 +11,17 @@ import java.util.regex.Pattern;
 public class Regex {
 
     private StatsLoader s = new StatsLoader();
+    
+    Stats stats = Stats.INSTANCE;
 
     public void parse(String telnetText) {
         String command = null;
         String keyName = null;
         String keyVal = null;
         String digitsOnly = null;
+        if (telnetText.contains("You are fighting")) {
+            stats.war();
+        }
         if (telnetText.contains("HP:")) {
             //System.out.println("monitor trigger..");
             try {

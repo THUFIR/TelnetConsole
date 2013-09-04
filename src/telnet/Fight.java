@@ -20,11 +20,12 @@ public class Fight {
         }
         if (s.getEnervate() == true) {
             q.add("enervate");
+            q.add("dart");
         }
         if (s.getConfuse()) {
             q.add("confuse");
         }
-        q.add("dart");
+
         return q;
     }
 }
