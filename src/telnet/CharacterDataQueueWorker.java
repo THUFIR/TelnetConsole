@@ -16,8 +16,7 @@ public class CharacterDataQueueWorker extends Observable {
     public CharacterDataQueueWorker() {
     }
 
-    public void read(final ConcurrentLinkedQueue<Character> dataFromMUD) throws SocketException, IOException {
-
+    public void read(final ConcurrentLinkedQueue<Character> remoteCharDataQueue) {
         Thread makeString = new Thread() {
 
             @Override
@@ -25,7 +24,7 @@ public class CharacterDataQueueWorker extends Observable {
                 do {
                     try {
                         do {
-                            Character ch = dataFromMUD.remove();
+                            Character ch = remoteCharDataQueue.remove();
                             currentData.append(ch);
                         } while (true);
                     } catch (NoSuchElementException nse) {
