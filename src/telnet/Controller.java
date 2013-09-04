@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Properties;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.commons.net.telnet.TelnetClient;
 
@@ -60,18 +61,9 @@ public final class Controller implements Runnable, Observer {
             String remoteOutputMessage = remoteDataQueueWorker.getFinalData();
             remoteMessageWorker.parseWithRegex(remoteOutputMessage, commandsQueue);
             if (characterState.isFighting()) {
-                Command b = new Command("backstab");
-                Command h = new Command("heartplunge");
-                Command e = new Command("enervate");
-                Command d = new Command("dart");
-                Command c = new Command("confuse");
-                commandsQueue.add(b);
-                commandsQueue.add(h);
-                commandsQueue.add(e);
-                commandsQueue.add(d);
-                commandsQueue.add(c);
+                Queue<Command> fightCommands = characterState.getFightCommands();
+                commandsQueue.addAll(fightCommands);
             } else {
-                Command bk = new Command("berserk 0");
                 commandsQueue = new ConcurrentLinkedQueue<>();
             }
             sendCommands();

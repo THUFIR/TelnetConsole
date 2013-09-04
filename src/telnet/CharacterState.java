@@ -1,7 +1,9 @@
 package telnet;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Queue;
 
 class CharacterState {
 
@@ -52,5 +54,20 @@ class CharacterState {
 
     boolean isFighting() {
         return s.isFighting();
+    }
+
+    Queue<Command> getFightCommands() {
+        Queue<Command> fightCommands = new LinkedList<>();
+        Command b = new Command("backstab");
+        Command h = new Command("heartplunge");
+        Command e = new Command("enervate");
+        Command d = new Command("dart");
+        Command c = new Command("confuse");
+        fightCommands.add(b);
+        fightCommands.add(h);
+        fightCommands.add(e);
+        fightCommands.add(d);
+        fightCommands.add(c);
+        return fightCommands;
     }
 }
