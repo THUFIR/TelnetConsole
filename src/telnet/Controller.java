@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Properties;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.commons.net.telnet.TelnetClient;
 
@@ -23,7 +22,6 @@ public final class Controller implements Runnable, Observer {
     private Regex regex = new Regex();
     private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue();
     private final ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue();
-    private Fight fight = new Fight();
     private Stats s = Stats.INSTANCE;
 
     private Controller() {
@@ -37,40 +35,40 @@ public final class Controller implements Runnable, Observer {
         remoteDataQueueWorker.addObserver(this);
     }
 
-    private void sendCommand(String command) {
+    private void sendCommands() {
+        String commandString = null;
+        Iterator it = commandsQueue.iterator();
+        byte b = 10;
+        byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
-        if (command != null) {
+        while (it.hasNext()) {
             try {
-                byte b = 10;
-                byte[] bytes = command.getBytes();
-                outputStream.write(bytes);
+                Command command = commandsQueue.remove();
+                commandString = command.getCommand();
+                commandBytes = commandString.getBytes();
+                outputStream.write(commandBytes);
                 outputStream.write(10);
                 outputStream.flush();
-            } catch (IOException | NullPointerException ex) {
-                out.println("Controller.sendCommand.no valid command\t" + command + "\t" + ex);
+            } catch (IOException ex) {
+                out.println("sendCommand\n" + ex);
             }
         }
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        String command = "help";
 
         if (o instanceof CharacterDataQueueWorker) {
             String remoteOutputMessage = remoteDataQueueWorker.getFinalData();
             regex.parse(remoteOutputMessage);
-            Queue<String> commands = fight.getCommands();
-            Iterator<String> it = commands.iterator();
-            while (it.hasNext()) {
-                command = commands.remove();
-                sendCommand(command);
-            }
-            s.peace();
+            sendCommands();
         }
 
         if (o instanceof ConsoleReader) {
-            command = localInputReader.getCommand();
-            sendCommand(command);
+            String commandString = localInputReader.getCommand();
+            Command command = new Command(commandString);
+            commandsQueue.add(command);
+            sendCommands();
         }
     }
 
@@ -81,7 +79,7 @@ public final class Controller implements Runnable, Observer {
             InetAddress host = InetAddress.getByName(props.getProperty("host"));
             int port = Integer.parseInt(props.getProperty("port"));
             telnetClient.connect(host, port);
-          // outputStream = telnetClient.getOutputStream();
+            // outputStream = telnetClient.getOutputStream();
             readPrintParse();
         } catch (UnknownHostException ex) {
             out.println(ex);
@@ -96,4 +94,3 @@ public final class Controller implements Runnable, Observer {
         new Controller().run();
     }
 }
-
