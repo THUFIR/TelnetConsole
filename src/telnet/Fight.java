@@ -5,7 +5,7 @@ import java.util.Queue;
 
 public class Fight {
 
-    Stats s = Stats.INSTANCE;
+    CharacterState s = CharacterState.INSTANCE;
 
     public Fight() {
     }

@@ -25,7 +25,7 @@ public class CharacterDataQueueWorker extends Observable {
                 do {
                     try {
                         do {
-                            char ch = dataFromMUD.remove();
+                            Character ch = dataFromMUD.remove();
                             currentData.append(ch);
                         } while (true);
                     } catch (NoSuchElementException nse) {

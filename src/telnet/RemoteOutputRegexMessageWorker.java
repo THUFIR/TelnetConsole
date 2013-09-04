@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class RemoteOutputRegexMessageWorker {
 
-    private CharacterState characterState = new CharacterState();
+    private Character characterState = new Character();
     private ConcurrentLinkedQueue<Command> commandsQueue;
 
     public RemoteOutputRegexMessageWorker() {

@@ -17,19 +17,19 @@ import org.apache.commons.net.telnet.TelnetClient;
 public final class Controller implements Runnable, Observer {
 
     private TelnetClient telnetClient = new TelnetClient();
-    private InputStreamWorker remoteOutputWorker = new InputStreamWorker();
+    private InputStreamWorker remoteInputStreamWorker = new InputStreamWorker();
     private ConsoleReader localInputReader = new ConsoleReader();
     private CharacterDataQueueWorker remoteDataQueueWorker = new CharacterDataQueueWorker();
     private RemoteOutputRegexMessageWorker remoteMessageWorker = new RemoteOutputRegexMessageWorker();
-    private ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue();
+    private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue();
     private ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue();
-    private CharacterState characterState = new CharacterState();
+    private Character characterState = new Character();
 
     private Controller() {
     }
 
     public void startReadPrintThreads() throws SocketException, IOException {
-        remoteOutputWorker.print(telnetClient.getInputStream(), remoteCharDataQueue);
+        remoteInputStreamWorker.print(telnetClient.getInputStream(), remoteCharDataQueue);
         localInputReader.read();
         localInputReader.addObserver(this);
         remoteDataQueueWorker.read(remoteCharDataQueue);
