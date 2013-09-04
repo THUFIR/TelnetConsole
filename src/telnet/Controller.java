@@ -20,8 +20,8 @@ public final class Controller implements Runnable, Observer {
     private ConsoleReader localInputReader = new ConsoleReader();
     private CharacterDataQueueWorker remoteDataQueueWorker = new CharacterDataQueueWorker();
     private RemoteOutputRegexMessageWorker remoteMessageWorker = new RemoteOutputRegexMessageWorker();
-    private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue();
-    private final ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue();
+    private ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue();
+    private ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue();
     private CharacterState characterState = new CharacterState();
 
     private Controller() {
@@ -44,7 +44,7 @@ public final class Controller implements Runnable, Observer {
                 outputStream.write(commandBytes);
                 outputStream.write(10);
                 outputStream.flush();
-                Thread.sleep(50);
+                Thread.sleep(10);
             } catch (IOException | NoSuchElementException ex) {
                 break;
             } finally {
@@ -72,7 +72,7 @@ public final class Controller implements Runnable, Observer {
                 commandsQueue.add(c);
             } else {
                 Command bk = new Command("berserk 0");
-                commandsQueue.add(bk);
+                commandsQueue = new ConcurrentLinkedQueue<>();
             }
             sendCommands();
         }

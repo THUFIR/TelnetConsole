@@ -22,7 +22,7 @@ public class RemoteOutputRegexMessageWorker {
         String keyName = null;
         String keyVal = null;
         String digitsOnly = null;
-        if(telnetText.contains("Backstab whom?")){
+        if(telnetText.contains("You can only do this while fighting.")){
             characterState.setFighting(false);
         }
         if (telnetText.contains("You are fighting")) {
