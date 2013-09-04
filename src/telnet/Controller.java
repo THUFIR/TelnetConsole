@@ -19,10 +19,9 @@ public final class Controller implements Runnable, Observer {
     private InputStreamWorker remoteOutputWorker = new InputStreamWorker();
     private ConsoleReader localInputReader = new ConsoleReader();
     private CharacterDataQueueWorker remoteDataQueueWorker = new CharacterDataQueueWorker();
-    private Regex regex = new Regex();
+    private RemoteOutputMessageWorker regex = new RemoteOutputMessageWorker();
     private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue();
     private final ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue();
-    private Stats s = Stats.INSTANCE;
 
     private Controller() {
     }
@@ -38,14 +37,11 @@ public final class Controller implements Runnable, Observer {
     private void sendCommands() {
         String commandString = null;
         Iterator it = commandsQueue.iterator();
-        byte b = 10;
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
         while (it.hasNext()) {
             try {
-                Command command = commandsQueue.remove();
-                commandString = command.getCommand();
-                commandBytes = commandString.getBytes();
+                commandBytes = commandsQueue.remove().getCommand().getBytes();
                 outputStream.write(commandBytes);
                 outputStream.write(10);
                 outputStream.flush();
@@ -79,7 +75,6 @@ public final class Controller implements Runnable, Observer {
             InetAddress host = InetAddress.getByName(props.getProperty("host"));
             int port = Integer.parseInt(props.getProperty("port"));
             telnetClient.connect(host, port);
-            // outputStream = telnetClient.getOutputStream();
             readPrintParse();
         } catch (UnknownHostException ex) {
             out.println(ex);
