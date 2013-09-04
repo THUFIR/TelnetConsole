@@ -2,7 +2,6 @@ package telnet;
 
 import static java.lang.System.out;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -82,7 +81,7 @@ public final class Controller implements Runnable, Observer {
             InetAddress host = InetAddress.getByName(props.getProperty("host"));
             int port = Integer.parseInt(props.getProperty("port"));
             telnetClient.connect(host, port);
-          //  outputStream = telnetClient.getOutputStream();
+          // outputStream = telnetClient.getOutputStream();
             readPrintParse();
         } catch (UnknownHostException ex) {
             out.println(ex);
@@ -97,3 +96,4 @@ public final class Controller implements Runnable, Observer {
         new Controller().run();
     }
 }
+
