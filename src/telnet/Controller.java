@@ -58,6 +58,7 @@ public final class Controller implements Runnable, Observer {
         }
     }
 
+    
     @Override
     public void update(Observable o, Object arg) {
 
