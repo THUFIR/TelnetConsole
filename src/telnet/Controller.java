@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
@@ -36,24 +35,18 @@ public final class Controller implements Runnable, Observer {
     }
 
     private void sendCommands() {
-        String commandString = null;
-        Iterator it = commandsQueue.iterator();
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
-        while (it.hasNext()) {
+        while (!commandsQueue.isEmpty()) {
             try {
-                commandString = commandsQueue.remove().getCommand();
-                out.println("trying command\t" + commandString);
-                commandBytes = commandString.getBytes();
+                commandBytes = commandsQueue.remove().getCommand().getBytes();
                 outputStream.write(commandBytes);
                 outputStream.write(10);
                 outputStream.flush();
                 Thread.sleep(200);
             } catch (IOException | NoSuchElementException ex) {
-                out.println("sendCommand\n" + ex);
                 break;
             } finally {
-                out.println("sendCommands..finally");
                 break;
             }
         }
