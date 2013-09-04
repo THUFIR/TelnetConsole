@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
@@ -14,7 +15,11 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import org.apache.commons.net.telnet.TelnetClient;
 
-public final class Controller implements Observer {
+public final class Controller implements Runnable, Observer {
+
+    
+    private Controller() {
+    }
 
     private TelnetClient telnetClient = new TelnetClient();
     private InputStreamReader serverReader = new InputStreamReader();
@@ -71,16 +76,24 @@ public final class Controller implements Observer {
         }
     }
 
-    public Controller() throws SocketException, IOException {
-        Properties props = PropertiesReader.getProps();
+    
+    @Override
+    public void run() {
+        try {
+         Properties props = PropertiesReader.getProps();
         InetAddress host = InetAddress.getByName(props.getProperty("host"));
         int port = Integer.parseInt(props.getProperty("port"));
         telnetClient.connect(host, port);
         outputStream = telnetClient.getOutputStream();
         readPrintParse(telnetClient.getInputStream());
+        } catch (UnknownHostException ex) {
+        } catch (SocketException ex) {
+        } catch (IOException ex) {
+        }
+    }
+    
+    public static void main(String[] args) throws SocketException, IOException {
+        new Controller().run();
     }
 
-    public static void main(String[] args) throws SocketException, IOException {
-        new Controller();
-    }
 }
