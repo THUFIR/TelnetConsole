@@ -23,7 +23,7 @@ public final class Controller implements Runnable, Observer {
     private RemoteOutputRegexMessageWorker remoteMessageWorker = new RemoteOutputRegexMessageWorker();
     private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue();
     private ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue();
-    private Character characterState = new Character();
+    private MyCharacter characterState = new MyCharacter();
 
     private Controller() {
     }

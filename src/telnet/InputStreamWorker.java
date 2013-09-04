@@ -23,6 +23,8 @@ public class InputStreamWorker {
             public void run() {
                 try {
                     char ch = (char) inputStream.read();
+                    //char ch = Character.valueOf(inputStream.read());
+                    //MyCharacter c = Charact
                     sb.append(ch);
                     while (255 > ch && ch >= 0) {
                         charQueue.add(ch);
