@@ -66,7 +66,7 @@ public final class Controller implements Runnable, Observer {
             String remoteOutputMessage = remoteDataQueueWorker.getFinalData();
             remoteMessageWorker.parseWithRegex(remoteOutputMessage);
             out.println("cdqw");
-            //sendCommands();
+            sendCommands();
         }
 
         if (o instanceof ConsoleReader) {
