@@ -5,16 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RemoteOutputRegexMessageWorker {
 
     private StatsLoader s = new StatsLoader();
-    
-    Stats stats = Stats.INSTANCE;
+    private ConcurrentLinkedQueue<Command> commandsQueue;
+    private Stats stats = Stats.INSTANCE;
 
-    public void parseWithRegex(String telnetText) {
+    public RemoteOutputRegexMessageWorker() {
+    }
+
+    public void parseWithRegex(String telnetText, ConcurrentLinkedQueue<Command> commandsQueue) {
         String command = null;
         String keyName = null;
         String keyVal = null;

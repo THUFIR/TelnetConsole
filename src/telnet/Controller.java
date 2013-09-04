@@ -48,6 +48,7 @@ public final class Controller implements Runnable, Observer {
                 outputStream.write(commandBytes);
                 outputStream.write(10);
                 outputStream.flush();
+                Thread.sleep(200);
             } catch (IOException | NoSuchElementException ex) {
                 out.println("sendCommand\n" + ex);
                 break;
@@ -58,14 +59,12 @@ public final class Controller implements Runnable, Observer {
         }
     }
 
-    
     @Override
     public void update(Observable o, Object arg) {
 
         if (o instanceof CharacterDataQueueWorker) {
             String remoteOutputMessage = remoteDataQueueWorker.getFinalData();
-            remoteMessageWorker.parseWithRegex(remoteOutputMessage);
-            //out.println("cdqw");
+            remoteMessageWorker.parseWithRegex(remoteOutputMessage, commandsQueue);
             sendCommands();
         }
 
@@ -73,7 +72,6 @@ public final class Controller implements Runnable, Observer {
             String commandString = localInputReader.getCommand();
             Command command = new Command(commandString);
             commandsQueue.add(command);
-            //out.println("cr");
             sendCommands();
         }
     }
