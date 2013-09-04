@@ -1,5 +1,6 @@
 package telnet;
 
+import static java.lang.System.out;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -42,7 +43,7 @@ public final class Controller implements Observer {
                 outputStream.write(10);
                 outputStream.flush();
             } catch (IOException | NullPointerException ex) {
-                //out.println("Controller.sendCommand.no valid command\t" + command + "\t" + ex);
+                out.println("Controller.sendCommand.no valid command\t" + command + "\t" + ex);
             }
         }
     }
