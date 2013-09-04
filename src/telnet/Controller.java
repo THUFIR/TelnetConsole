@@ -18,28 +18,28 @@ import org.apache.commons.net.telnet.TelnetClient;
 public final class Controller implements Runnable, Observer {
 
     private TelnetClient telnetClient = new TelnetClient();
-    private ReadThread mudServer = new ReadThread();
-    private ConsoleReader consoleReader = new ConsoleReader();
-    private QueueWorker telnetDataWorker = new QueueWorker();
+    private InputStreamWorker remoteOutputWorker = new InputStreamWorker();
+    private ConsoleReader localInputReader = new ConsoleReader();
+    private CharacterDataQueueWorker remoteDataQueueWorker = new CharacterDataQueueWorker();
     private Regex regex = new Regex();
-    private final ConcurrentLinkedQueue<Character> telnetData = new ConcurrentLinkedQueue();
+    private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue();
     private final ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue();
-    private OutputStream outputStream;
     private Fight fight = new Fight();
     private Stats s = Stats.INSTANCE;
 
     private Controller() {
     }
 
-    public void readPrintParse(final InputStream inputStream) throws SocketException, IOException {
-        mudServer.print(inputStream, telnetData);
-        consoleReader.read();
-        consoleReader.addObserver(this);
-        telnetDataWorker.read(telnetData);
-        telnetDataWorker.addObserver(this);
+    public void readPrintParse() throws SocketException, IOException {
+        remoteOutputWorker.print(telnetClient.getInputStream(), remoteCharDataQueue);
+        localInputReader.read();
+        localInputReader.addObserver(this);
+        remoteDataQueueWorker.read(remoteCharDataQueue);
+        remoteDataQueueWorker.addObserver(this);
     }
 
     private void sendCommand(String command) {
+        OutputStream outputStream = telnetClient.getOutputStream();
         if (command != null) {
             try {
                 byte b = 10;
@@ -57,9 +57,9 @@ public final class Controller implements Runnable, Observer {
     public void update(Observable o, Object arg) {
         String command = "help";
 
-        if (o instanceof QueueWorker) {
-            String data = telnetDataWorker.getFinalData();
-            regex.parse(data);
+        if (o instanceof CharacterDataQueueWorker) {
+            String remoteOutputMessage = remoteDataQueueWorker.getFinalData();
+            regex.parse(remoteOutputMessage);
             Queue<String> commands = fight.getCommands();
             Iterator<String> it = commands.iterator();
             while (it.hasNext()) {
@@ -70,7 +70,7 @@ public final class Controller implements Runnable, Observer {
         }
 
         if (o instanceof ConsoleReader) {
-            command = consoleReader.getCommand();
+            command = localInputReader.getCommand();
             sendCommand(command);
         }
     }
@@ -82,8 +82,8 @@ public final class Controller implements Runnable, Observer {
             InetAddress host = InetAddress.getByName(props.getProperty("host"));
             int port = Integer.parseInt(props.getProperty("port"));
             telnetClient.connect(host, port);
-            outputStream = telnetClient.getOutputStream();
-            readPrintParse(telnetClient.getInputStream());
+          //  outputStream = telnetClient.getOutputStream();
+            readPrintParse();
         } catch (UnknownHostException ex) {
             out.println(ex);
         } catch (SocketException ex) {
