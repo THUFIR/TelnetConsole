@@ -65,7 +65,7 @@ public final class Controller implements Runnable, Observer {
         if (o instanceof CharacterDataQueueWorker) {
             String remoteOutputMessage = remoteDataQueueWorker.getFinalData();
             remoteMessageWorker.parseWithRegex(remoteOutputMessage);
-            out.println("cdqw");
+            //out.println("cdqw");
             sendCommands();
         }
 
@@ -73,7 +73,7 @@ public final class Controller implements Runnable, Observer {
             String commandString = localInputReader.getCommand();
             Command command = new Command(commandString);
             commandsQueue.add(command);
-            out.println("cr");
+            //out.println("cr");
             sendCommands();
         }
     }
