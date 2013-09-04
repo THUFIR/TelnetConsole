@@ -1,4 +1,3 @@
-
 package telnet;
 
 import java.io.IOException;
