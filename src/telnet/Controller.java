@@ -45,7 +45,7 @@ public final class Controller implements Runnable, Observer {
                 outputStream.write(commandBytes);
                 outputStream.write(10);
                 outputStream.flush();
-                Thread.sleep(10);
+                Thread.sleep(3);
             } catch (IOException | NoSuchElementException ex) {
                 break;
             } finally {

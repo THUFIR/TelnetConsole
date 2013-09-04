@@ -53,12 +53,10 @@ class CharacterLogic {
         Command b = new Command("backstab");
         Command h = new Command("heartplunge");
         Command e = new Command("enervate");
-        Command d = new Command("dart");
         Command c = new Command("confuse");
         fightCommands.add(b);
         fightCommands.add(h);
         fightCommands.add(e);
-        fightCommands.add(d);
         fightCommands.add(c);
         return fightCommands;
     }
