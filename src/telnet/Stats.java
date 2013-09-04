@@ -16,6 +16,7 @@ public enum Stats {
     private boolean heartplunge = false;
     private boolean enervate = false;
     private boolean confuse = false;
+    private boolean isFighting = false;
 
     public void setHP(String s) {
         hp = Integer.parseInt(s);
@@ -121,6 +122,10 @@ public enum Stats {
         return confuse;
     }
 
+    public boolean isFighting() {
+        return isFighting;
+    }
+
     public String toString() {
         return "\n\nhp\t" + hp + "\tcp\t" + cp + "\tadrenaline\t" + adrenaline
                 + "\nendorphine\t" + endorphine + "\t\tberserk\t" + berserk
@@ -130,17 +135,18 @@ public enum Stats {
                 + "\nconfuse\t" + confuse + "\n\n";
     }
 
-    public void peace() {
-        backstab = false;
-        heartplunge = false;
-        enervate = false;
-        confuse = false;
-    }
-
-    public void war() {
-        backstab = true;
-        heartplunge = true;
-        enervate = true;
-        confuse = true;
+    public void setIsFighting(boolean isFighting) {
+        this.isFighting = isFighting;
+        if (isFighting) {
+            backstab = true;
+            heartplunge = true;
+            enervate = true;
+            confuse = true;
+        } else {
+            backstab = false;
+            heartplunge = false;
+            enervate = false;
+            confuse = false;
+        }
     }
 }

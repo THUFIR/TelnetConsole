@@ -22,6 +22,7 @@ public final class Controller implements Runnable, Observer {
     private RemoteOutputRegexMessageWorker remoteMessageWorker = new RemoteOutputRegexMessageWorker();
     private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue();
     private final ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue();
+    private CharacterState characterState = new CharacterState();
 
     private Controller() {
     }
@@ -43,7 +44,7 @@ public final class Controller implements Runnable, Observer {
                 outputStream.write(commandBytes);
                 outputStream.write(10);
                 outputStream.flush();
-                Thread.sleep(200);
+                Thread.sleep(50);
             } catch (IOException | NoSuchElementException ex) {
                 break;
             } finally {
@@ -58,6 +59,21 @@ public final class Controller implements Runnable, Observer {
         if (o instanceof CharacterDataQueueWorker) {
             String remoteOutputMessage = remoteDataQueueWorker.getFinalData();
             remoteMessageWorker.parseWithRegex(remoteOutputMessage, commandsQueue);
+            if (characterState.isFighting()) {
+                Command b = new Command("backstab");
+                Command h = new Command("heartplunge");
+                Command e = new Command("enervate");
+                Command d = new Command("dart");
+                Command c = new Command("confuse");
+                commandsQueue.add(b);
+                commandsQueue.add(h);
+                commandsQueue.add(e);
+                commandsQueue.add(d);
+                commandsQueue.add(c);
+            } else {
+                Command bk = new Command("berserk 0");
+                commandsQueue.add(bk);
+            }
             sendCommands();
         }
 

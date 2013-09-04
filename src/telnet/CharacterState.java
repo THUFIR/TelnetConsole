@@ -3,7 +3,7 @@ package telnet;
 import java.util.List;
 import java.util.Map.Entry;
 
-class StatsLoader {
+class CharacterState {
 
     Stats s = Stats.INSTANCE;
 
@@ -18,7 +18,7 @@ class StatsLoader {
             }
             if (key.contains("darts")) {
                 key = "darts";
-                s.war();
+                s.setIsFighting(true);
             }
             if (key.contains("blood")) {
                 key = "blood";
@@ -44,5 +44,13 @@ class StatsLoader {
                     s.setGrafts(val);
             }
         }
+    }
+
+    public void setFighting(boolean isFighting) {
+        s.setIsFighting(isFighting);
+    }
+
+    boolean isFighting() {
+        return s.isFighting();
     }
 }

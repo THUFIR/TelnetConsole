@@ -11,9 +11,8 @@ import java.util.regex.Pattern;
 
 public class RemoteOutputRegexMessageWorker {
 
-    private StatsLoader s = new StatsLoader();
+    private CharacterState characterState = new CharacterState();
     private ConcurrentLinkedQueue<Command> commandsQueue;
-    private Stats stats = Stats.INSTANCE;
 
     public RemoteOutputRegexMessageWorker() {
     }
@@ -23,11 +22,13 @@ public class RemoteOutputRegexMessageWorker {
         String keyName = null;
         String keyVal = null;
         String digitsOnly = null;
+        if(telnetText.contains("Backstab whom?")){
+            characterState.setFighting(false);
+        }
         if (telnetText.contains("You are fighting")) {
-            stats.war();
+            characterState.setFighting(true);
         }
         if (telnetText.contains("HP:")) {
-            //System.out.println("monitor trigger..");
             try {
                 Pattern pattern = Pattern.compile("(\\w+): (\\d+)");
                 Matcher matcher = pattern.matcher(telnetText);
@@ -46,7 +47,8 @@ public class RemoteOutputRegexMessageWorker {
                         digitsOnly = m.group(1);
                     }
                 }
-                s.setMonitor(stringEntries);
+                characterState.setMonitor(stringEntries);
+                characterState.setFighting(true);
             } catch (IllegalStateException e) {
             }
         }
