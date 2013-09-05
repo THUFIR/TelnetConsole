@@ -48,7 +48,7 @@ class CharacterLogic {
         }
     }
 
-    Queue<Command> getFightCommands() {
+    Queue<Command> getCommands() {
         Queue<Command> fightCommands = new LinkedList<>();
         Command b = new Command("backstab");
         Command h = new Command("heartplunge");

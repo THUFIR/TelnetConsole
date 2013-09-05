@@ -11,13 +11,12 @@ import java.util.regex.Pattern;
 
 public class RemoteOutputRegexMessageWorker {
 
-    private MyCharacter characterState = new MyCharacter();
+    private CharacterBean characterState = new CharacterBean();
     private ConcurrentLinkedQueue<Command> commandsQueue;
 
     public RemoteOutputRegexMessageWorker() {
     }
 
-    //Pattern p = Pattern.compile("(\\w+): (\\d+/{0,1}\\d*%{0,1})");
     public void parseWithRegex(String telnetText, ConcurrentLinkedQueue<Command> commandsQueue) {
         String command = null;
         String keyName = null;
@@ -30,17 +29,23 @@ public class RemoteOutputRegexMessageWorker {
             characterState.setFighting(true);
         }
         if (telnetText.contains("HP:")) {
+
             try {
+
+
+                /*
+                // ******CODE DOING OUTPUT HERE, JUST FOR TESTING
                 Pattern p2 = Pattern.compile("(\\w+): (\\d+/{0,1}\\d*%{0,1})");
                 Matcher m2 = p2.matcher(telnetText);
                 String g1;
                 String g2;
                 while (m2.find()) {
-                    g1 = m2.group(1);
-                    g2 = m2.group(2);
-                    System.out.println(g1 + "\t" + g2);
+                g1 = m2.group(1);
+                g2 = m2.group(2);
+                System.out.println(g1 + "\t" + g2);
                 }
-
+                //***********END CODE DOING OUTPUT HERE
+                 */
 
                 Pattern pattern = Pattern.compile("(\\w+): (\\d+)");
                 Matcher matcher = pattern.matcher(telnetText);

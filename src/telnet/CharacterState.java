@@ -94,7 +94,7 @@ public enum CharacterState {
         backstab = Boolean.parseBoolean(s);
     }
 
-    public boolean getBackstab() {
+    public boolean isBackstab() {
         return backstab;
     }
 
@@ -102,7 +102,7 @@ public enum CharacterState {
         heartplunge = Boolean.parseBoolean(s);
     }
 
-    public boolean getHeartplunge() {
+    public boolean isHeartplung() {
         return heartplunge;
     }
 
@@ -110,7 +110,7 @@ public enum CharacterState {
         enervate = Boolean.parseBoolean(s);
     }
 
-    public boolean getEnervate() {
+    public boolean isEnervate() {
         return enervate;
     }
 
@@ -118,7 +118,7 @@ public enum CharacterState {
         confuse = Boolean.parseBoolean(s);
     }
 
-    public boolean getConfuse() {
+    public boolean isConfuse() {
         return confuse;
     }
 

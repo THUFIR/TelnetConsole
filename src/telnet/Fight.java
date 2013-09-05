@@ -12,17 +12,17 @@ public class Fight {
 
     public Queue<String> getCommands() {
         Queue<String> q = new LinkedList<>();
-        if (s.getBackstab() == true) {
+        if (s.isBackstab() == true) {
             q.add("backstab");
         }
-        if (s.getHeartplunge() == true) {
+        if (s.isHeartplung() == true) {
             q.add("heartplunge");
         }
-        if (s.getEnervate() == true) {
+        if (s.isEnervate() == true) {
             q.add("enervate");
             q.add("dart");
         }
-        if (s.getConfuse()) {
+        if (s.isConfuse()) {
             q.add("confuse");
         }
 
