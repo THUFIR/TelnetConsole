@@ -23,7 +23,7 @@ public final class Controller implements Runnable, Observer {
     private RemoteOutputRegexMessageWorker remoteMessageWorker = new RemoteOutputRegexMessageWorker();
     private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue();
     private ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue();
-    private CharacterBean character = new CharacterBean();
+    private PlayerBean playerCharacter = new PlayerBean();
 
     private Controller() {
     }
@@ -60,13 +60,13 @@ public final class Controller implements Runnable, Observer {
         if (o instanceof CharacterDataQueueWorker) {
             String remoteOutputMessage = remoteDataQueueWorker.getFinalData();
             remoteMessageWorker.parseWithRegex(remoteOutputMessage, commandsQueue);
-            if (character.isFighting()) {
-                Queue<Command> fightCommands = character.getCommands();
+            if (playerCharacter.isFighting()) {
+                Queue<Command> fightCommands = playerCharacter.getCommands();
                 commandsQueue.addAll(fightCommands);
-            } else {
-                commandsQueue = new ConcurrentLinkedQueue<>();
             }
-            sendCommands();
+            if (playerCharacter.isLoggedIn()) {
+                sendCommands();
+            }
         }
 
         if (o instanceof ConsoleReader) {

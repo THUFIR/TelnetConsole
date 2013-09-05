@@ -13,7 +13,7 @@ public class InputStreamWorker {
     public InputStreamWorker() {
     }
 
-    public void print(final InputStream inputStream,  final ConcurrentLinkedQueue<Character> charQueue) {
+    public void print(final InputStream inputStream, final ConcurrentLinkedQueue<Character> charQueue) {
 
         Thread print = new Thread() {
 
@@ -23,8 +23,6 @@ public class InputStreamWorker {
             public void run() {
                 try {
                     char ch = (char) inputStream.read();
-                    //char ch = Character.valueOf(inputStream.read());
-                    //MyCharacter c = Charact
                     sb.append(ch);
                     while (255 > ch && ch >= 0) {
                         charQueue.add(ch);

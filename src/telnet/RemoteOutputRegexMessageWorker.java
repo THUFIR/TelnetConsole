@@ -11,22 +11,32 @@ import java.util.regex.Pattern;
 
 public class RemoteOutputRegexMessageWorker {
 
-    private CharacterBean characterState = new CharacterBean();
+    private PlayerBean playerCharacter = new PlayerBean();
     private ConcurrentLinkedQueue<Command> commandsQueue;
 
     public RemoteOutputRegexMessageWorker() {
     }
 
+    //died.
     public void parseWithRegex(String telnetText, ConcurrentLinkedQueue<Command> commandsQueue) {
         String command = null;
         String keyName = null;
         String keyVal = null;
         String digitsOnly = null;
+
+        if (telnetText.startsWith("Welcome ")) {
+            playerCharacter.setLoggedIn(true);
+        }
+
+        if (telnetText.contains("died.") || telnetText.contains("Corpse of")) {
+            playerCharacter.setCorpse(true);
+        }
+
         if (telnetText.contains("You can only do this while fighting.")) {
-            characterState.setFighting(false);
+            playerCharacter.setFighting(false);
         }
         if (telnetText.contains("You are fighting")) {
-            characterState.setFighting(true);
+            playerCharacter.setFighting(true);
         }
         if (telnetText.contains("HP:")) {
 
@@ -64,8 +74,8 @@ public class RemoteOutputRegexMessageWorker {
                         digitsOnly = m.group(1);
                     }
                 }
-                characterState.setMonitor(stringEntries);
-                characterState.setFighting(true);
+                playerCharacter.setMonitor(stringEntries);
+                playerCharacter.setFighting(true);
             } catch (IllegalStateException e) {
             }
         }
