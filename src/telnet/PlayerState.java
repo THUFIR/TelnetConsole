@@ -19,6 +19,7 @@ public enum PlayerState {
     private boolean corpse = false;
     private boolean loggedIn = false;
     private boolean doping = false;
+    private boolean healing = false;
 
     public void setHP(String s) {
         hp = Integer.parseInt(s);
@@ -151,5 +152,13 @@ public enum PlayerState {
 
     void setDoping(boolean doping) {
         this.doping = doping;
+    }
+
+    void setHealing(boolean healing) {
+        this.healing = healing;
+    }
+
+    boolean isHealing() {
+        return healing;
     }
 }

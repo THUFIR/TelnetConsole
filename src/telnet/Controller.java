@@ -12,7 +12,6 @@ import java.util.Observer;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.net.telnet.TelnetClient;
 
@@ -52,7 +51,7 @@ public final class Controller implements Runnable, Observer {
                 outputStream.flush();
                 commandString = new String(commandBytes, "UTF-8");
                 log.fine(commandString + "\t" + commandBytes);
-                Thread.sleep(10);   //don't hammer the server???  in microseconds
+                Thread.sleep(400);   //don't hammer the server???  in microseconds
             } catch (InterruptedException | IOException | NoSuchElementException ex) {
             } finally {
             }

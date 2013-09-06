@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 
 public class RemoteOutputRegexMessageWorker {
 
-    
     private final static Logger LOG = Logger.getLogger(RemoteOutputRegexMessageWorker.class.getName());
     private PlayerCharacter playerCharacter = new PlayerCharacter();
     private ConcurrentLinkedQueue<Command> commandsQueue;
@@ -30,6 +29,13 @@ public class RemoteOutputRegexMessageWorker {
 
         if (telnetText.contains("Taking over link-dead copy.") || telnetText.contains("You already have an active copy. Taking it over.")) {
             playerCharacter.setLoggedIn(true);
+        }
+
+        if (telnetText.contains("You feel crafty enough to try to confuse your enemy again.")) {
+            playerCharacter.setConfuse(true);
+        }
+        if (telnetText.contains("Your body closes up some of your wounds")) {
+            playerCharacter.setHealing(true);
         }
 
         if (telnetText.contains("The refreshing effects of blood doping have worn off.")) {
