@@ -12,18 +12,21 @@ import java.util.Observer;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.net.telnet.TelnetClient;
 
 public final class Controller implements Runnable, Observer {
 
+    private final static Logger LOG = Logger.getLogger(Controller.class.getName());
     private TelnetClient telnetClient = new TelnetClient();
     private InputStreamWorker remoteInputStreamWorker = new InputStreamWorker();
     private ConsoleReader localInputReader = new ConsoleReader();
     private CharacterDataQueueWorker remoteDataQueueWorker = new CharacterDataQueueWorker();
     private RemoteOutputRegexMessageWorker remoteMessageWorker = new RemoteOutputRegexMessageWorker();
-    private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue();
-    private ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue();
-    private PlayerBean playerCharacter = new PlayerBean();
+    private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue<>();
+    private PlayerCharacter playerCharacter = new PlayerCharacter();
 
     private Controller() {
     }
@@ -39,17 +42,19 @@ public final class Controller implements Runnable, Observer {
     private void sendCommands() {
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
+        String fileString = null;
         while (!commandsQueue.isEmpty()) {
             try {
                 commandBytes = commandsQueue.remove().getCommand().getBytes();
                 outputStream.write(commandBytes);
+                outputStream.write(13);
                 outputStream.write(10);
                 outputStream.flush();
-                Thread.sleep(1);
-            } catch (IOException | NoSuchElementException ex) {
-                break;
+                fileString = new String(commandBytes, "UTF-8");
+                LOG.log( Level.INFO, "{0}\t{1}", new Object[]{fileString, commandBytes});
+                Thread.sleep(10);   //don't hammer the server???  in microseconds
+            } catch (InterruptedException | IOException | NoSuchElementException ex) {
             } finally {
-                break;
             }
         }
     }
@@ -60,13 +65,8 @@ public final class Controller implements Runnable, Observer {
         if (o instanceof CharacterDataQueueWorker) {
             String remoteOutputMessage = remoteDataQueueWorker.getFinalData();
             remoteMessageWorker.parseWithRegex(remoteOutputMessage, commandsQueue);
-            if (playerCharacter.isFighting()) {
-                Queue<Command> fightCommands = playerCharacter.getCommands();
-                commandsQueue.addAll(fightCommands);
-            }
-            if (playerCharacter.isLoggedIn()) {
-                sendCommands();
-            }
+            Queue<Command> newCommands = playerCharacter.getCommands();
+            commandsQueue.addAll(newCommands);
         }
 
         if (o instanceof ConsoleReader) {

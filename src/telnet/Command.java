@@ -7,11 +7,16 @@ public class Command {
     private Command() {
     }
 
-    Command(String command) {
+    public Command(String command) {
         this.command = command;
     }
 
     public String getCommand() {
+        return command;
+    }
+
+    
+    public String toString () {
         return command;
     }
 }

@@ -14,7 +14,7 @@ public class InputStreamWorker {
     }
 
     public void print(final InputStream inputStream, final ConcurrentLinkedQueue<Character> charQueue) {
-
+        
         Thread print = new Thread() {
 
             StringBuilder sb = new StringBuilder();
@@ -24,7 +24,7 @@ public class InputStreamWorker {
                 try {
                     char ch = (char) inputStream.read();
                     sb.append(ch);
-                    while (255 > ch && ch >= 0) {
+                    while (255 > ch && ch >= 0) {  //while true, infinite loop.indefinite run time
                         charQueue.add(ch);
                         ch = (char) inputStream.read();
                         System.out.print(ch);
