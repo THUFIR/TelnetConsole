@@ -18,7 +18,7 @@ import org.apache.commons.net.telnet.TelnetClient;
 
 public final class Controller implements Runnable, Observer {
 
-    private final static Logger LOG = Logger.getLogger(Controller.class.getName());
+    private Logger log = Logger.getLogger(Controller.class.getName());
     private TelnetClient telnetClient = new TelnetClient();
     private InputStreamWorker remoteInputStreamWorker = new InputStreamWorker();
     private ConsoleReader localInputReader = new ConsoleReader();
@@ -42,7 +42,7 @@ public final class Controller implements Runnable, Observer {
     private void sendCommands() {
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
-        String fileString = null;
+        String commandString = null;
         while (!commandsQueue.isEmpty()) {
             try {
                 commandBytes = commandsQueue.remove().getCommand().getBytes();
@@ -50,8 +50,8 @@ public final class Controller implements Runnable, Observer {
                 outputStream.write(13);
                 outputStream.write(10);
                 outputStream.flush();
-                fileString = new String(commandBytes, "UTF-8");
-                LOG.log( Level.INFO, "{0}\t{1}", new Object[]{fileString, commandBytes});
+                commandString = new String(commandBytes, "UTF-8");
+                log.fine(commandString + "\t" + commandBytes);
                 Thread.sleep(10);   //don't hammer the server???  in microseconds
             } catch (InterruptedException | IOException | NoSuchElementException ex) {
             } finally {
@@ -73,8 +73,8 @@ public final class Controller implements Runnable, Observer {
             String commandString = localInputReader.getCommand();
             Command command = new Command(commandString);
             commandsQueue.add(command);
-            sendCommands();
         }
+        sendCommands();
     }
 
     @Override

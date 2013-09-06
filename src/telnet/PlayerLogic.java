@@ -89,7 +89,7 @@ public class PlayerLogic {
             commands = new LinkedList<>();
         }
         for (Command command : commands) {
-            LOG.info(command.toString());
+            LOG.fine(command.toString());
         }
         return commands;
     }
