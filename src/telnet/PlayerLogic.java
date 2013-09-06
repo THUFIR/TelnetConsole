@@ -7,12 +7,12 @@ import java.util.logging.Logger;
 public class PlayerLogic {
 
     private final static Logger log = Logger.getLogger(PlayerLogic.class.getName());
-    private PlayerState state = PlayerState.INSTANCE;
+//    private PlayerCharacter pc = new PlayerCharacter();
 
     public PlayerLogic() {
     }
 
-    private Queue<Command> confuse() {
+    private Queue<Command> confuse(PlayerCharacter pc) {
         Queue<Command> commands = new LinkedList<>();
         Command c = new Command("confuse");
         Command b = new Command("backstab");
@@ -23,11 +23,11 @@ public class PlayerLogic {
         commands.add(b);
         commands.add(e);
         commands.add(c);
-        state.setConfuse(false);
+        pc.setConfuse(false);
         return commands;
     }
 
-    private Queue<Command> corpse() {
+    private Queue<Command> corpse(PlayerCharacter pc) {
         Queue<Command> commands = new LinkedList<>();
         Command d = new Command("draw");
         Command p = new Command("process corpse");
@@ -39,18 +39,17 @@ public class PlayerLogic {
         commands.add(ga);
         commands.add(m);
         commands.add(g);
-        state.setCorpse(false);
+        pc.setCorpse(false);
         return commands;
     }
 
-    private Queue<Command> healing() {
+    private Queue<Command> healing(PlayerCharacter pc) {
         Queue<Command> commands = new LinkedList<>();
-        int end = state.getEndorphine();
-        if (state.getEndorphine() > 0) {
-            Command e = new Command("endorphine 0");
+        if (pc.getEndorphine() > 0) {
+            Command e = new Command("endorphine 5");
             commands.add(e);
         }
-        if (state.getBerserk() > 0) {
+        if (pc.getBerserk() > 0) {
             Command b = new Command("berserk 0");
             commands.add(b);
         }
@@ -59,18 +58,18 @@ public class PlayerLogic {
         return commands;
     }
 
-    public Queue<Command> getCommands() {
+    public Queue<Command> getCommands(PlayerCharacter pc) {
         Queue<Command> commands = new LinkedList<>();
-        if (state.isConfuse()) {
-            commands.addAll(confuse());
+        if (pc.isConfuse()) {
+            commands.addAll(confuse(pc));
         }
-        if (state.isCorpse()) {
-            commands.addAll(corpse());
+        if (pc.isCorpse()) {
+            commands.addAll(corpse(pc));
         }
-        if (state.isHealing()) {
-            commands.addAll(healing());
+        if (pc.isHealing()) {
+            commands.addAll(healing(pc));
         }
-        if (!state.isLoggedIn()) {
+        if (!pc.isLoggedIn()) {
             commands = new LinkedList<>();
         }
         return commands;

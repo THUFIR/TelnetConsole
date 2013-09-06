@@ -3,9 +3,12 @@ package telnet;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Queue;
+import java.util.logging.Logger;
 
 class PlayerCharacter {
 
+    
+    private Logger log = Logger.getLogger(PlayerCharacter.class.getName());
     private PlayerState state = PlayerState.INSTANCE;
     private PlayerLogic logic = new PlayerLogic();
 
@@ -29,23 +32,23 @@ class PlayerCharacter {
             }
             switch (key) {
                 case "hp":
-                    state.setHP(val);
+                    setHP(val);
                 case "cp":
-                    state.setCP(val);
+                    setCP(val);
                 case "adrenaline":
-                    state.setAdrenaline(val);
+                    setAdrenaline(val);
                 case "endorphine":
-                    state.setEndorphine(val);
+                    setEndorphine(val);
                 case "berserk":
-                    state.setBerserk(val);
+                    setBerserk(val);
                 case "none":
-                    state.setEnemy(val);
+                    setEnemy(val);
                 case "darts":
-                    state.setDarts(val);
+                    setDarts(val);
                 case "blood":
-                    state.setBlood(val);
+                    setBlood(val);
                 case "grafts":
-                    state.setGrafts(val);
+                    setGrafts(val);
             }
         }
     }
@@ -59,7 +62,7 @@ class PlayerCharacter {
     }
 
     Queue<Command> getCommands() {
-        Queue<Command> commands = logic.getCommands();
+        Queue<Command> commands = logic.getCommands(this);
         return commands;
     }
 
@@ -80,10 +83,66 @@ class PlayerCharacter {
     }
 
     public String toString() {
-        return "foo";
+        return state.toString();
     }
 
     void setHealing(boolean healing) {
         state.setHealing(true);
+    }
+
+    int getEndorphine() {
+        return state.getEndorphine();
+    }
+
+    int getBerserk() {
+        return state.getBerserk();
+    }
+
+    boolean isConfuse() {
+        return state.isConfuse();
+    }
+
+    boolean isCorpse() {
+        return state.isCorpse();
+    }
+
+    boolean isHealing() {
+        return state.isHealing();
+    }
+
+    private void setGrafts(String val) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void setBlood(String val) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void setDarts(String val) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void setEnemy(String val) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void setBerserk(String val) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void setEndorphine(String val) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void setAdrenaline(String val) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void setCP(String val) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void setHP(String val) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

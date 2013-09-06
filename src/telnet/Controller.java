@@ -38,7 +38,7 @@ public final class Controller implements Runnable, Observer {
         remoteDataQueueWorker.addObserver(this);
     }
 
-    private void sendCommands() {
+    private void sendCommands(long delay) {
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
         String commandString = null;
@@ -51,7 +51,7 @@ public final class Controller implements Runnable, Observer {
                 outputStream.flush();
                 commandString = new String(commandBytes, "UTF-8");
                 log.fine(commandString + "\t" + commandBytes);
-                Thread.sleep(400);   //don't hammer the server???  in microseconds
+                Thread.sleep(delay);   //don't hammer the server???  in microseconds
             } catch (InterruptedException | IOException | NoSuchElementException ex) {
             } finally {
             }
@@ -60,12 +60,13 @@ public final class Controller implements Runnable, Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-
+        long delay = 0;
         if (o instanceof CharacterDataQueueWorker) {
             String remoteOutputMessage = remoteDataQueueWorker.getFinalData();
             remoteMessageWorker.parseWithRegex(remoteOutputMessage, commandsQueue);
             Queue<Command> newCommands = playerCharacter.getCommands();
             commandsQueue.addAll(newCommands);
+            delay = 500;
         }
 
         if (o instanceof ConsoleReader) {
@@ -73,7 +74,7 @@ public final class Controller implements Runnable, Observer {
             Command command = new Command(commandString);
             commandsQueue.add(command);
         }
-        sendCommands();
+        sendCommands(delay);
     }
 
     @Override
