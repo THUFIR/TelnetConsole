@@ -1,5 +1,9 @@
 package telnet;
 
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Queue;
+
 public enum PlayerState {
 
     INSTANCE;
@@ -21,6 +25,47 @@ public enum PlayerState {
     private boolean doping = false;
     private boolean healing = false;
 
+    
+    
+    public void setMonitor(List<Entry> stringEntries) {
+        String key = null, val = null;
+        for (Entry e : stringEntries) {
+            key = e.getKey().toString();
+            key = key.toLowerCase();
+            val = e.getValue().toString();
+            if (key.contains("hp")) {
+                key = "hp";
+            }
+            if (key.contains("darts")) {
+                key = "darts";
+            }
+            if (key.contains("blood")) {
+                key = "blood";
+            }
+            switch (key) {
+                case "hp":
+                    setHP(val);
+                case "cp":
+                    setCP(val);
+                case "adrenaline":
+                    setAdrenaline(val);
+                case "endorphine":
+                    setEndorphine(val);
+                case "berserk":
+                    setBerserk(val);
+                case "none":
+                    setEnemy(val);
+                case "darts":
+                    setDarts(val);
+                case "blood":
+                    setBlood(val);
+                case "grafts":
+                    setGrafts(val);
+            }
+        }
+    }
+
+    
     public void setHP(String s) {
         hp = Integer.parseInt(s);
     }
@@ -160,5 +205,10 @@ public enum PlayerState {
 
     boolean isHealing() {
         return healing;
+    }
+
+    Queue<Command> getCommands() {
+        Queue<Command> commands = PlayerLogic.getCommands();
+        return commands;
     }
 }

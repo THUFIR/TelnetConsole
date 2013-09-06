@@ -8,11 +8,14 @@ public class PlayerLogic {
 
     private final static Logger log = Logger.getLogger(PlayerLogic.class.getName());
 //    private PlayerCharacter pc = new PlayerCharacter();
-
+    private static PlayerState pc = PlayerState.INSTANCE;
+    
     public PlayerLogic() {
     }
+    
+    
 
-    private Queue<Command> confuse(PlayerCharacter pc) {
+    private static Queue<Command> confuse() {
         Queue<Command> commands = new LinkedList<>();
         Command c = new Command("confuse");
         Command b = new Command("backstab");
@@ -27,7 +30,7 @@ public class PlayerLogic {
         return commands;
     }
 
-    private Queue<Command> corpse(PlayerCharacter pc) {
+    private static Queue<Command> corpse() {
         Queue<Command> commands = new LinkedList<>();
         Command d = new Command("draw");
         Command p = new Command("process corpse");
@@ -43,7 +46,7 @@ public class PlayerLogic {
         return commands;
     }
 
-    private Queue<Command> healing(PlayerCharacter pc) {
+    private static Queue<Command> healing() {
         Queue<Command> commands = new LinkedList<>();
         if (pc.getEndorphine() > 0) {
             Command e = new Command("endorphine 5");
@@ -58,16 +61,16 @@ public class PlayerLogic {
         return commands;
     }
 
-    public Queue<Command> getCommands(PlayerCharacter pc) {
+    public static Queue<Command> getCommands() {
         Queue<Command> commands = new LinkedList<>();
         if (pc.isConfuse()) {
-            commands.addAll(confuse(pc));
+            commands.addAll(confuse());
         }
         if (pc.isCorpse()) {
-            commands.addAll(corpse(pc));
+            commands.addAll(corpse());
         }
         if (pc.isHealing()) {
-            commands.addAll(healing(pc));
+            commands.addAll(healing());
         }
         if (!pc.isLoggedIn()) {
             commands = new LinkedList<>();

@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class RemoteOutputRegexMessageWorker {
 
     private final static Logger LOG = Logger.getLogger(RemoteOutputRegexMessageWorker.class.getName());
-    private PlayerCharacter playerCharacter = new PlayerCharacter();
+    private PlayerState playerCharacter = PlayerState.INSTANCE;
     private ConcurrentLinkedQueue<Command> commandsQueue;
 
     public RemoteOutputRegexMessageWorker() {
