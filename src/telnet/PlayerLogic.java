@@ -7,8 +7,7 @@ import java.util.logging.Logger;
 public class PlayerLogic {
 
     private final static Logger log = Logger.getLogger(PlayerLogic.class.getName());
-//    private PlayerCharacter pc = new PlayerCharacter();
-    private static PlayerState pc = PlayerState.INSTANCE;
+    private static PlayerCharacter pc = PlayerCharacter.INSTANCE;
     
     public PlayerLogic() {
     }
@@ -47,6 +46,7 @@ public class PlayerLogic {
     }
 
     private static Queue<Command> healing() {
+        log.info(pc.toString());
         Queue<Command> commands = new LinkedList<>();
         if (pc.getEndorphine() > 0) {
             Command e = new Command("endorphine 5");
@@ -57,6 +57,7 @@ public class PlayerLogic {
             commands.add(b);
         }
         Command m = new Command("monitor");
+        pc.setHealing(false);
         commands.add(m);
         return commands;
     }
