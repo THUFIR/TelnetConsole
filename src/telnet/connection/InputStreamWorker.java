@@ -1,4 +1,4 @@
-package telnet;
+package telnet.connection;
 
 import static java.lang.System.out;
 import java.io.IOException;

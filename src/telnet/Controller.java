@@ -1,5 +1,7 @@
 package telnet;
 
+import telnet.game.Command;
+import telnet.game.PlayerCharacter;
 import static java.lang.System.out;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,6 +16,10 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 import org.apache.commons.net.telnet.TelnetClient;
+import telnet.connection.CharacterDataQueueWorker;
+import telnet.connection.ConsoleReader;
+import telnet.connection.InputStreamWorker;
+import telnet.connection.PropertiesReader;
 
 public final class Controller implements Runnable, Observer {
 
@@ -21,8 +27,7 @@ public final class Controller implements Runnable, Observer {
     private TelnetClient telnetClient = new TelnetClient();
     private InputStreamWorker remoteInputStreamWorker = new InputStreamWorker();
     private ConsoleReader localInputReader = new ConsoleReader();
-    private CharacterDataQueueWorker remoteDataQueueWorker = new CharacterDataQueueWorker();
-    private RemoteOutputRegexMessageWorker remoteMessageWorker = new RemoteOutputRegexMessageWorker();
+    private CharacterDataQueueWorker characterDataQueueWorker = new CharacterDataQueueWorker();
     private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue<>();
     private ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue<>();
     private PlayerCharacter playerCharacter = PlayerCharacter.INSTANCE;
@@ -34,8 +39,8 @@ public final class Controller implements Runnable, Observer {
         remoteInputStreamWorker.print(telnetClient.getInputStream(), remoteCharDataQueue);
         localInputReader.read();
         localInputReader.addObserver(this);
-        remoteDataQueueWorker.read(remoteCharDataQueue);
-        remoteDataQueueWorker.addObserver(this);
+        characterDataQueueWorker.read(remoteCharDataQueue);
+        characterDataQueueWorker.addObserver(this);
     }
 
     private void sendCommands(long delay) {
@@ -62,9 +67,9 @@ public final class Controller implements Runnable, Observer {
     public void update(Observable o, Object arg) {
         long delay = 0;
         if (o instanceof CharacterDataQueueWorker) {
-            String remoteOutputMessage = remoteDataQueueWorker.getFinalData();
-            remoteMessageWorker.parseWithRegex(remoteOutputMessage, commandsQueue);
-            Queue<Command> newCommands = playerCharacter.getCommands();
+            log.info("starting regex..");
+            String remoteOutputMessage = characterDataQueueWorker.getFinalData();
+            Queue<Command> newCommands = playerCharacter.processRemoteOutput(remoteOutputMessage);
             commandsQueue.addAll(newCommands);
             delay = 500;
         }

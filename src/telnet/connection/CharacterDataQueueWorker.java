@@ -1,7 +1,5 @@
-package telnet;
+package telnet.connection;
 
-import java.io.IOException;
-import java.net.SocketException;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.concurrent.ConcurrentLinkedQueue;
