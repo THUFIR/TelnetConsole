@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
@@ -43,7 +44,7 @@ public final class Controller implements Runnable, Observer {
         characterDataQueueWorker.addObserver(this);
     }
 
-    private void sendCommands(long delay) {
+    private void executeCommands(long delay) {
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
         String commandString = null;
@@ -66,20 +67,29 @@ public final class Controller implements Runnable, Observer {
     @Override
     public void update(Observable o, Object arg) {
         long delay = 0;
-        if (o instanceof CharacterDataQueueWorker) {
-            log.info("starting regex..");
-            String remoteOutputMessage = characterDataQueueWorker.getFinalData();
-            Queue<Command> newCommands = playerCharacter.processRemoteOutput(remoteOutputMessage);
-            commandsQueue.addAll(newCommands);
-            delay = 500;
+        Queue<Command> newCommands = new LinkedList<>();
+        log.fine("updating...");
+        try {
+            if (o instanceof CharacterDataQueueWorker) {
+                String remoteOutputMessage = characterDataQueueWorker.getFinalData();
+                log.fine("starting regex.." + remoteOutputMessage);
+                newCommands = playerCharacter.processRemoteOutput(remoteOutputMessage);
+                delay = 500;
+            }
+        } catch (NullPointerException npe) {
+            log.fine(npe.toString());
         }
 
         if (o instanceof ConsoleReader) {
             String commandString = localInputReader.getCommand();
             Command command = new Command(commandString);
-            commandsQueue.add(command);
+            newCommands.add(command);
         }
-        sendCommands(delay);
+        for (Command c : newCommands) {
+            log.fine(c.toString());
+        }
+        commandsQueue.addAll(newCommands);
+        executeCommands(delay);
     }
 
     @Override

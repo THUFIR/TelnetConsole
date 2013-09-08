@@ -1,13 +1,16 @@
 package telnet.game;
 
+import java.util.logging.Logger;
+
 public class PlayerFlags {
 
+    private final static Logger log = Logger.getLogger(PlayerFlags.class.getName());
     private boolean backstab = false;
     private boolean heartplunge = false;
     private boolean enervate = false;
     private boolean confuse = false;
     private boolean corpse = false;
-    private boolean loggedIn = false;
+    private boolean loggedIn = true;
     private boolean doping = false;
     private boolean healing = false;
 
@@ -52,6 +55,7 @@ public class PlayerFlags {
 
     public void setCorpse(boolean corpse) {
         this.corpse = corpse;
+        log.info("corpse\t" + this.corpse);
     }
 
     public boolean isLoggedIn() {
@@ -70,7 +74,6 @@ public class PlayerFlags {
         this.doping = doping;
     }
 
-    
     public boolean isHealing() {
         return healing;
     }

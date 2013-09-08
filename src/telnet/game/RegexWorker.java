@@ -1,7 +1,5 @@
 package telnet.game;
 
-import telnet.game.PlayerCharacter;
-import telnet.game.PlayerStats;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +18,7 @@ public class RegexWorker {
     }
 
     public void parseWithRegex(String telnetText) {
+        LOG.fine(telnetText);
         String command = null;
         String keyName = null;
         String keyVal = null;
@@ -70,8 +69,8 @@ public class RegexWorker {
                         digitsOnly = m.group(1);
                     }
                 }
-                PlayerStats mon = new PlayerStats(stringEntries);
-                playerCharacter.setStats(mon);
+                PlayerStats stats = new PlayerStats(stringEntries);
+                playerCharacter.setStats(stats);
             } catch (IllegalStateException e) {
             }
         }

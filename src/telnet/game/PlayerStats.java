@@ -15,7 +15,7 @@ public class PlayerStats {
     private int blood = 0;
     private int grafts = 0;
 
-    private PlayerStats() {
+    public PlayerStats() {
     }
 
     public PlayerStats(List<Entry> stringEntries) {
@@ -206,13 +206,10 @@ public class PlayerStats {
     public void setGrafts(int grafts) {
         this.grafts = grafts;
     }
-    
-    
-    
+
     public String toString() {
         return "\n\nhp\t" + hp + "\tcp\t" + cp + "\tadrenaline\t" + adrenaline
                 + "\nendorphine\t" + endorphine + "\t\tberserk\t" + berserk
-                + "\nenemy\t" +none;
+                + "\nenemy\t" + none;
     }
-
 }
