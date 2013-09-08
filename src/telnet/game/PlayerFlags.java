@@ -5,7 +5,7 @@ import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.logging.Logger;
 
-public class PlayerFlags extends Observable {
+public class PlayerFlags {
 
     private final static Logger log = Logger.getLogger(PlayerFlags.class.getName());
     private boolean backstab = false;
@@ -73,7 +73,7 @@ public class PlayerFlags extends Observable {
 
     public void setCorpse(boolean corpse) {
         this.corpse = corpse;
-        log.info("corpse\t" + this.corpse);
+        log.fine("corpse\t" + this.corpse);
     }
 
     public boolean isLoggedIn() {
@@ -98,5 +98,9 @@ public class PlayerFlags extends Observable {
 
     public void setHealing(boolean healing) {
         this.healing = healing;
+    }
+
+    public String toString() {
+        return "corpse\t" + corpse;
     }
 }

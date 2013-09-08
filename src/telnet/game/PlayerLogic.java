@@ -1,12 +1,10 @@
 package telnet.game;
 
 import java.util.LinkedList;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Queue;
 import java.util.logging.Logger;
 
-public class PlayerLogic implements Observer {
+public class PlayerLogic {
 
     private final static Logger log = Logger.getLogger(PlayerLogic.class.getName());
     private PlayerCharacter playerCharacter = PlayerCharacter.INSTANCE;
@@ -47,7 +45,7 @@ public class PlayerLogic implements Observer {
     }
 
     private Queue<Command> healing() {
-        log.info(playerCharacter.toString());
+        log.fine(playerCharacter.toString());
         Queue<Command> commands = new LinkedList<>();
         if (playerCharacter.getStats().getEndorphine() > 0) {
             Command e = new Command("endorphine 5");
@@ -63,8 +61,10 @@ public class PlayerLogic implements Observer {
         return commands;
     }
 
-    public Queue<Command> getCommands() {
+    public Queue<Command> doLogic() {
+        log.fine("should print...");
         flags = playerCharacter.getFlags();
+        log.fine(flags.toString());
         Queue<Command> commands = new LinkedList<>();
         log.fine(playerCharacter.getFlags().toString());
         if (playerCharacter.getFlags().isConfuse()) {
@@ -81,12 +81,5 @@ public class PlayerLogic implements Observer {
         }
         playerCharacter.setFlags(flags);
         return commands;
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        if (o instanceof PlayerFlags) {
-            log.info("flags changed");
-        }
     }
 }

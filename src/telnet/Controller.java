@@ -29,7 +29,7 @@ public final class Controller implements Runnable, Observer {
     private InputStreamWorker remoteInputStreamWorker = new InputStreamWorker();
     private ConsoleReader localInputReader = new ConsoleReader();
     private CharacterDataQueueWorker characterDataQueueWorker = new CharacterDataQueueWorker();
-    private final ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue<>();
     private ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue<>();
     private PlayerCharacter playerCharacter = PlayerCharacter.INSTANCE;
 

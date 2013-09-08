@@ -9,20 +9,20 @@ public enum PlayerCharacter {
     private final static Logger log = Logger.getLogger(PlayerCharacter.class.getName());
     private PlayerStats stats = new PlayerStats();
     private PlayerFlags flags = new PlayerFlags();
-    private RegexWorker regexWorker = new RegexWorker();
-    private PlayerLogic playerLogic = new PlayerLogic();
 
     private PlayerCharacter() {
     }
 
     public Queue<Command> processRemoteOutput(String remoteOutputMessage) {
-        log.fine("trying to process..." + remoteOutputMessage);
-        regexWorker.parseWithRegex(remoteOutputMessage);
-        Queue<Command> commands = playerLogic.getCommands();
-        for (Command c : commands) {
+        log.fine("trying to process...");
+        RegexWorker regexWorker = new RegexWorker();
+        regexWorker.parseAndUpdatePlayerCharacter(remoteOutputMessage);
+        PlayerLogic playerLogic = new PlayerLogic();
+        Queue<Command> newCommands = playerLogic.doLogic();
+        for (Command c : newCommands) {
             log.fine(c.toString());
         }
-        return commands;
+        return newCommands;
     }
 
     public PlayerStats getStats() {
@@ -34,6 +34,7 @@ public enum PlayerCharacter {
     }
 
     public PlayerFlags getFlags() {
+        log.fine(flags.toString());
         return flags;
     }
 

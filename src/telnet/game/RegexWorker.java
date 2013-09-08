@@ -18,8 +18,10 @@ public class RegexWorker {
     public RegexWorker() {
     }
 
-    public void parseWithRegex(String telnetText) {
+    public void parseAndUpdatePlayerCharacter(String telnetText) {
         LOG.fine(telnetText);
+        flags = PlayerCharacter.INSTANCE.getFlags();
+        stats = PlayerCharacter.INSTANCE.getStats();
         String command = null;
         String keyName = null;
         String keyVal = null;
