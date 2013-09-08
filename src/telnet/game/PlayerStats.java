@@ -82,128 +82,74 @@ public class PlayerStats {
     }
 
 
-    /**
-     * @return the hp
-     */
     public int getHp() {
         return hp;
     }
 
-    /**
-     * @param hp the hp to set
-     */
     public void setHp(int hp) {
         this.hp = hp;
     }
 
-    /**
-     * @return the cp
-     */
     public int getCp() {
         return cp;
     }
 
-    /**
-     * @param cp the cp to set
-     */
     public void setCp(int cp) {
         this.cp = cp;
     }
 
-    /**
-     * @return the adrenaline
-     */
     public int getAdrenaline() {
         return adrenaline;
     }
 
-    /**
-     * @param adrenaline the adrenaline to set
-     */
     public void setAdrenaline(int adrenaline) {
         this.adrenaline = adrenaline;
     }
 
-    /**
-     * @return the endorphine
-     */
     public int getEndorphine() {
         return endorphine;
     }
 
-    /**
-     * @param endorphine the endorphine to set
-     */
     public void setEndorphine(int endorphine) {
         this.endorphine = endorphine;
     }
 
-    /**
-     * @return the berserk
-     */
     public int getBerserk() {
         return berserk;
     }
 
-    /**
-     * @param berserk the berserk to set
-     */
     public void setBerserk(int berserk) {
         this.berserk = berserk;
     }
 
-    /**
-     * @return the none
-     */
     public int getNone() {
         return none;
     }
-
-    /**
-     * @param none the none to set
-     */
+    
     public void setNone(int none) {
         this.none = none;
     }
 
-    /**
-     * @return the darts
-     */
     public int getDarts() {
         return darts;
     }
 
-    /**
-     * @param darts the darts to set
-     */
     public void setDarts(int darts) {
         this.darts = darts;
     }
 
-    /**
-     * @return the blood
-     */
     public int getBlood() {
         return blood;
     }
 
-    /**
-     * @param blood the blood to set
-     */
     public void setBlood(int blood) {
         this.blood = blood;
     }
 
-    /**
-     * @return the grafts
-     */
     public int getGrafts() {
         return grafts;
     }
 
-    /**
-     * @param grafts the grafts to set
-     */
     public void setGrafts(int grafts) {
         this.grafts = grafts;
     }
