@@ -1,5 +1,7 @@
 package telnet.game;
 
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 public class PlayerFlags {
@@ -15,6 +17,21 @@ public class PlayerFlags {
     private boolean healing = false;
 
     public PlayerFlags() {
+    }
+
+    PlayerFlags(List<Entry> flagsEntries) {
+        String key = null;
+        boolean val = false;
+
+
+        switch (key) {
+            case "loggedIn":
+                loggedIn = val;
+                break;
+            case "confuse":
+                confuse = val;
+                break;
+        }
     }
 
     public boolean isBackstab() {

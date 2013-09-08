@@ -12,9 +12,12 @@ import java.util.regex.Pattern;
 public class RegexWorker {
 
     private final static Logger LOG = Logger.getLogger(RegexWorker.class.getName());
-    private PlayerCharacter playerCharacter = PlayerCharacter.INSTANCE;
+    private PlayerFlags flags = new PlayerFlags();
+    private PlayerStats stats = new PlayerStats();
 
     public RegexWorker() {
+//        flags = PlayerCharacter.INSTANCE.getFlags();
+//        stats = PlayerCharacter.INSTANCE.getStats();
     }
 
     public void parseWithRegex(String telnetText) {
@@ -25,29 +28,29 @@ public class RegexWorker {
         String digitsOnly = null;
 
         if (telnetText.contains("Taking over link-dead copy.") || telnetText.contains("You already have an active copy. Taking it over.")) {
-            playerCharacter.getFlags().setLoggedIn(true);
+            flags.setLoggedIn(true);
         }
 
         if (telnetText.contains("You feel crafty enough to try to confuse your enemy again.")) {
-            playerCharacter.getFlags().setConfuse(true);
+            flags.setConfuse(true);
         }
         if (telnetText.contains("Your body closes up some of your wounds")) {
-            playerCharacter.getFlags().setHealing(true);
+            flags.setHealing(true);
         }
 
         if (telnetText.contains("The refreshing effects of blood doping have worn off.")) {
-            playerCharacter.getFlags().setDoping(true);
+            flags.setDoping(true);
         }
 
         if (telnetText.contains("died.") || telnetText.contains("Corpse of")) {
-            playerCharacter.getFlags().setCorpse(true);
+            flags.setCorpse(true);
         }
 
         if (telnetText.contains("You can only do this while fighting.")) {
-            playerCharacter.getFlags().setConfuse(false);
+            flags.setConfuse(false);
         }
         if (telnetText.contains("You are fighting")) {
-            playerCharacter.getFlags().setConfuse(true);
+            flags.setConfuse(true);
         }
         if (telnetText.contains("HP:")) {
 
@@ -69,10 +72,11 @@ public class RegexWorker {
                         digitsOnly = m.group(1);
                     }
                 }
-                PlayerStats stats = new PlayerStats(stringEntries);
-                playerCharacter.setStats(stats);
+                stats = new PlayerStats(stringEntries);
             } catch (IllegalStateException e) {
             }
         }
+        PlayerCharacter.INSTANCE.setFlags(flags);  //do both
+        PlayerCharacter.INSTANCE.setStats(stats);
     }
 }

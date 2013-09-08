@@ -11,6 +11,7 @@ public class PlayerLogic {
     private PlayerFlags flags;
 
     public PlayerLogic() {
+        flags = playerCharacter.getFlags();
     }
 
     private Queue<Command> confuse() {
@@ -24,7 +25,6 @@ public class PlayerLogic {
         commands.add(backstab);
         commands.add(enervate);
         commands.add(confuse);
-        flags = playerCharacter.getFlags();
         flags.setConfuse(false);
         playerCharacter.setFlags(flags);
         return commands;
@@ -42,7 +42,6 @@ public class PlayerLogic {
         commands.add(getAll);
         commands.add(monitor);
         commands.add(glance);
-        flags = playerCharacter.getFlags();
         flags.setCorpse(false);
         playerCharacter.setFlags(flags);
         return commands;
@@ -60,7 +59,6 @@ public class PlayerLogic {
             commands.add(b);
         }
         Command m = new Command("monitor");
-        flags = playerCharacter.getFlags();
         flags.setHealing(false);
         playerCharacter.setFlags(flags);
         commands.add(m);

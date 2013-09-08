@@ -51,35 +51,36 @@ public class PlayerStats {
             }
             switch (key) {
                 case "hp":
-                    setHp(Integer.parseInt(val));
+                    hp = Integer.parseInt(val);
                     break;
                 case "cp":
-                    setCp(Integer.parseInt(val));
+                    cp = Integer.parseInt(val);
                     break;
                 case "adrenaline":
-                    setAdrenaline(Integer.parseInt(val));
+                    adrenaline = Integer.parseInt(val);
                     break;
                 case "endorphine":
-                    setEndorphine(Integer.parseInt(val));
+                    endorphine = Integer.parseInt(val);
                     break;
                 case "berserk":
-                    setBerserk(Integer.parseInt(val));
+                    berserk = Integer.parseInt(val);
                     break;
                 case "none":
-                    setNone(Integer.parseInt(val));
+                    none = Integer.parseInt(val);
                     break;
                 case "darts":
-                    setDarts(Integer.parseInt(val));
+                    darts = Integer.parseInt(val);
                     break;
                 case "blood":
-                    setBlood(Integer.parseInt(val));
+                    blood = Integer.parseInt(val);
                     break;
                 case "grafts":
-                    setGrafts(Integer.parseInt(val));
+                  grafts=Integer.parseInt(val);
                     break;
             }
         }
     }
+
 
     /**
      * @return the hp
