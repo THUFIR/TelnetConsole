@@ -1,10 +1,5 @@
 package telnet.game;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.logging.Logger;
 
@@ -16,6 +11,9 @@ public enum PlayerCharacter {
     private PlayerFlags flags = new PlayerFlags();
     private RegexWorker regexWorker = new RegexWorker();
     private PlayerLogic playerLogic = new PlayerLogic();
+
+    private PlayerCharacter() {
+    }
 
     public Queue<Command> processRemoteOutput(String remoteOutputMessage) {
         log.fine("trying to process..." + remoteOutputMessage);

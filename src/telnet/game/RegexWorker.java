@@ -12,12 +12,10 @@ import java.util.regex.Pattern;
 public class RegexWorker {
 
     private final static Logger LOG = Logger.getLogger(RegexWorker.class.getName());
-    private PlayerFlags flags = new PlayerFlags();
-    private PlayerStats stats = new PlayerStats();
+    private PlayerFlags flags = new PlayerFlags();// = PlayerCharacter.INSTANCE.getFlags();
+    private PlayerStats stats = new PlayerStats();// = PlayerCharacter.INSTANCE.getStats();
 
     public RegexWorker() {
-//        flags = PlayerCharacter.INSTANCE.getFlags();
-//        stats = PlayerCharacter.INSTANCE.getStats();
     }
 
     public void parseWithRegex(String telnetText) {

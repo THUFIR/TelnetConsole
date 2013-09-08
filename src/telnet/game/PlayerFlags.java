@@ -2,9 +2,10 @@ package telnet.game;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Observable;
 import java.util.logging.Logger;
 
-public class PlayerFlags {
+public class PlayerFlags extends Observable {
 
     private final static Logger log = Logger.getLogger(PlayerFlags.class.getName());
     private boolean backstab = false;

@@ -1,10 +1,12 @@
 package telnet.game;
 
 import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Queue;
 import java.util.logging.Logger;
 
-public class PlayerLogic {
+public class PlayerLogic implements Observer {
 
     private final static Logger log = Logger.getLogger(PlayerLogic.class.getName());
     private PlayerCharacter playerCharacter = PlayerCharacter.INSTANCE;
@@ -25,7 +27,6 @@ public class PlayerLogic {
         commands.add(enervate);
         commands.add(confuse);
         flags.setConfuse(false);
-        playerCharacter.setFlags(flags);
         return commands;
     }
 
@@ -42,7 +43,6 @@ public class PlayerLogic {
         commands.add(monitor);
         commands.add(glance);
         flags.setCorpse(false);
-        playerCharacter.setFlags(flags);
         return commands;
     }
 
@@ -59,12 +59,12 @@ public class PlayerLogic {
         }
         Command m = new Command("monitor");
         flags.setHealing(false);
-        playerCharacter.setFlags(flags);
         commands.add(m);
         return commands;
     }
 
     public Queue<Command> getCommands() {
+        flags = playerCharacter.getFlags();
         Queue<Command> commands = new LinkedList<>();
         log.fine(playerCharacter.getFlags().toString());
         if (playerCharacter.getFlags().isConfuse()) {
@@ -79,6 +79,14 @@ public class PlayerLogic {
         if (!playerCharacter.getFlags().isLoggedIn()) {
             commands = new LinkedList<>();
         }
+        playerCharacter.setFlags(flags);
         return commands;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if (o instanceof PlayerFlags) {
+            log.info("flags changed");
+        }
     }
 }
