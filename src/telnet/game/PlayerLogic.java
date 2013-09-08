@@ -8,10 +8,9 @@ public class PlayerLogic {
 
     private final static Logger log = Logger.getLogger(PlayerLogic.class.getName());
     private PlayerCharacter playerCharacter = PlayerCharacter.INSTANCE;
-    private PlayerFlags flags;
+    private PlayerFlags flags = new PlayerFlags();
 
     public PlayerLogic() {
-        flags = playerCharacter.getFlags();
     }
 
     private Queue<Command> confuse() {
