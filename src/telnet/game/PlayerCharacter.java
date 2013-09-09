@@ -1,16 +1,25 @@
 package telnet.game;
 
+import java.lang.Boolean;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Queue;
 import java.util.logging.Logger;
 
 public enum PlayerCharacter {
 
+    //new EnumMap<Country, String>
     INSTANCE;  //only one player can play the client
     private final static Logger log = Logger.getLogger(PlayerCharacter.class.getName());
     private PlayerStats stats = new PlayerStats();
     private PlayerFlags flags = new PlayerFlags();
+    private Map<PlayerCharacterFlags, Boolean> ef = new EnumMap(PlayerCharacterFlags.class);
 
     private PlayerCharacter() {
+        ef.put(PlayerCharacterFlags.CORPSE, false);
+        ef.put(PlayerCharacterFlags.FIGHT, false);
+        ef.put(PlayerCharacterFlags.FLIGHT, false);
+        ef.put(PlayerCharacterFlags.LOGGED_IN, false);
     }
 
     public Queue<Command> processRemoteOutput(String remoteOutputMessage) {
