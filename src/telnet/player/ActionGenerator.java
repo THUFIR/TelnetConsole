@@ -3,6 +3,7 @@ package telnet.player;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ActionGenerator {
@@ -67,12 +68,13 @@ public class ActionGenerator {
         }
     }
 
-    public EnumSet generateActions() {
-        Map<Flags, Boolean> flaggs = Player.INSTANCE.getFlags();
+    public EnumSet generateActions(Map<Flags, Boolean> flags) {
+        log.log(Level.FINE, "ok, doing healing :){0}", flags);
         EnumSet setOfCommands = EnumSet.noneOf(Actions.class);
         if (loggedIn) {
             if (corpse) {
                 setOfCommands.addAll(healingActions());
+                log.info("ok, doing healing :)" + setOfCommands);
             }
         }
         return setOfCommands;

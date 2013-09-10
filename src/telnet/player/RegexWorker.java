@@ -19,7 +19,7 @@ public class RegexWorker {
     public RegexWorker() {
     }
     
-    public void parseAndUpdatePlayerCharacter(String telnetText) {
+    public Map<Flags,Boolean> parseAndUpdatePlayerCharacter(String telnetText) {
         log.fine(telnetText);
         flags = Player.INSTANCE.getFlags();
         stats = Player.INSTANCE.getStats();
@@ -81,7 +81,8 @@ public class RegexWorker {
             } catch (IllegalStateException e) {
             }
         }
-        Player.INSTANCE.setFlags(flags);  //do both
+        //Player.INSTANCE.setFlags(flags);  //do both
         //PlayerCharacter.INSTANCE.setStats(stats);
+        return flags;
     }
 }
