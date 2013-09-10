@@ -36,7 +36,7 @@ public class ActionGenerator {
         return es;
     }
 
-    private void getPlayerState() {
+    private void initBooleanState() {
         Map<Flags, Boolean> flaggs = Player.INSTANCE.getFlags();
         log.info(flaggs.toString());
         for (Entry<Flags, Boolean> entry : playerCharacter.getFlags().entrySet()) {
@@ -68,8 +68,8 @@ public class ActionGenerator {
         }
     }
 
-    public EnumSet generateActions(Map<Flags, Boolean> flags) {
-        getPlayerState();
+    public EnumSet generateActions() {
+        initBooleanState();
         EnumSet setOfCommands = EnumSet.noneOf(Actions.class);
         if (loggedIn) {
             if (corpse) {
