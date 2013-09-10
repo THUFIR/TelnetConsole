@@ -1,13 +1,12 @@
-package telnet.game;
+package telnet.playerCharacter;
 
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Observable;
 import java.util.logging.Logger;
 
-public class PlayerFlags {
+public class Flags {
 
-    private final static Logger log = Logger.getLogger(PlayerFlags.class.getName());
+    private final static Logger log = Logger.getLogger(Flags.class.getName());
     private boolean backstab = false;
     private boolean heartplunge = false;
     private boolean enervate = false;
@@ -17,10 +16,10 @@ public class PlayerFlags {
     private boolean doping = false;
     private boolean healing = false;
 
-    public PlayerFlags() {
+    public Flags() {
     }
 
-    PlayerFlags(List<Entry> flagsEntries) {
+    Flags(List<Entry> flagsEntries) {
         String key = null;
         boolean val = false;
 

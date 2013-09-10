@@ -1,16 +1,20 @@
-package telnet.game;
+package telnet.playerCharacter;
 
+import java.util.EnumMap;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.logging.Logger;
 
-public class PlayerLogic {
+public class PlayerController {
 
-    private final static Logger log = Logger.getLogger(PlayerLogic.class.getName());
-    private PlayerCharacter playerCharacter = PlayerCharacter.INSTANCE;
-    private PlayerFlags flags = new PlayerFlags();
-
-    public PlayerLogic() {
+    private final static Logger log = Logger.getLogger(PlayerController.class.getName());
+    private Player playerCharacter = Player.INSTANCE;
+//    private Map<PCF, Boolean> flags = new EnumMap(PCF.class);
+    
+    public PlayerController(/*Map<PCF, Boolean> flags*/) {
+//        playerCharacter.setFlags(flags);
     }
 
     private Queue<Command> confuse() {
@@ -24,7 +28,9 @@ public class PlayerLogic {
         commands.add(backstab);
         commands.add(enervate);
         commands.add(confuse);
-        flags.setConfuse(false);
+        Map<PCF, Boolean> flag = new EnumMap(PCF.class);
+        flag.put(PCF.CONFUSE, false);
+        playerCharacter.putFlag(flag);
         return commands;
     }
 
@@ -40,7 +46,10 @@ public class PlayerLogic {
         commands.add(getAll);
         commands.add(monitor);
         commands.add(glance);
-        flags.setCorpse(false);
+        Map<PCF, Boolean> f = new EnumMap(PCF.class);
+        f.put(PCF.CORPSE, true);
+        playerCharacter.putFlag(f);
+//        playerCharacter.setFlags(f);
         return commands;
     }
 
@@ -56,30 +65,51 @@ public class PlayerLogic {
             commands.add(b);
         }
         Command m = new Command("monitor");
-        flags.setHealing(false);
+        Map<PCF, Boolean> flag = new EnumMap(PCF.class);
+        flag.put(PCF.HEALING, false);
+        playerCharacter.putFlag(flag);
         commands.add(m);
         return commands;
     }
 
-    public Queue<Command> doLogic() {
-        log.fine("should print...");
-        flags = playerCharacter.getFlags();
-        log.fine(flags.toString());
-        Queue<Command> commands = new LinkedList<>();
+    public Queue<Command> doLogic(String s) {
         log.fine(playerCharacter.getFlags().toString());
-        if (playerCharacter.getFlags().isConfuse()) {
-            commands.addAll(confuse());
+
+        RegexWorker rw = new RegexWorker();
+        rw.parseAndUpdatePlayerCharacter(s);
+
+        Queue<Command> commands = new LinkedList<>();
+
+        for (Entry<PCF, Boolean> entry : playerCharacter.getFlags().entrySet()) {
+            PCF key = entry.getKey();
+            Boolean val = entry.getValue();
+            switch (key) {
+                case CONFUSE:
+                    log.info("ok, confuzed..");
+                    break;
+            }
+        }
+
+        /*
+        if (flags.) {
+        commands.addAll(confuse());
         }
         if (playerCharacter.getFlags().isCorpse()) {
-            commands.addAll(corpse());
+        commands.addAll(corpse());
         }
         if (playerCharacter.getFlags().isHealing()) {
-            commands.addAll(healing());
+        commands.addAll(healing());
         }
         if (!playerCharacter.getFlags().isLoggedIn()) {
-            commands = new LinkedList<>();
+        commands = new LinkedList<>();
+        
         }
-        playerCharacter.setFlags(flags);
+
+
+        for (Entry<PCF, Boolean> entry : playerCharacter.getFlags().entrySet()) {
+            playerCharacter.setFlags(flags);
+        }*/
+        
         return commands;
     }
 }

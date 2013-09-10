@@ -1,9 +1,9 @@
-package telnet.game;
+package telnet.playerCharacter;
 
 import java.util.List;
 import java.util.Map.Entry;
 
-public class PlayerStats {
+public class Stats {
 
     private int hp = 0;
     private int cp = 0;
@@ -15,10 +15,10 @@ public class PlayerStats {
     private int blood = 0;
     private int grafts = 0;
 
-    public PlayerStats() {
+    public Stats() {
     }
 
-    public PlayerStats(List<Entry> stringEntries) {
+    public Stats(List<Entry> stringEntries) {
 
         String key = null, val = null;
         for (Entry e : stringEntries) {

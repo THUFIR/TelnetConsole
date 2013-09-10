@@ -1,4 +1,4 @@
-package telnet.game;
+package telnet.playerCharacter;
 
 public class Command {
 

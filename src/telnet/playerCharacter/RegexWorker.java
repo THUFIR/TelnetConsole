@@ -1,7 +1,8 @@
-package telnet.game;
+package telnet.playerCharacter;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,50 +11,55 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegexWorker {
-
-    private final static Logger LOG = Logger.getLogger(RegexWorker.class.getName());
-    private PlayerFlags flags = new PlayerFlags();// = PlayerCharacter.INSTANCE.getFlags();
-    private PlayerStats stats = new PlayerStats();// = PlayerCharacter.INSTANCE.getStats();
-
+    
+    private final static Logger log = Logger.getLogger(RegexWorker.class.getName());
+//    private PlayerFlags flags = new PlayerFlags();// = PlayerCharacter.INSTANCE.getFlags();
+    private Stats stats = new Stats();// = PlayerCharacter.INSTANCE.getStats();
+    private Map<PCF, Boolean> flags = new EnumMap(PCF.class);
+    
     public RegexWorker() {
     }
-
+    
     public void parseAndUpdatePlayerCharacter(String telnetText) {
-        LOG.fine(telnetText);
-        flags = PlayerCharacter.INSTANCE.getFlags();
-        stats = PlayerCharacter.INSTANCE.getStats();
+        log.fine(telnetText);
+        flags = Player.INSTANCE.getFlags();
+        stats = Player.INSTANCE.getStats();
         String command = null;
         String keyName = null;
         String keyVal = null;
         String digitsOnly = null;
-
+        
         if (telnetText.contains("Taking over link-dead copy.") || telnetText.contains("You already have an active copy. Taking it over.")) {
-            flags.setLoggedIn(true);
+            flags.put(PCF.LOGGEDIN, true);
         }
-
+        
         if (telnetText.contains("You feel crafty enough to try to confuse your enemy again.")) {
-            flags.setConfuse(true);
+            flags.put(PCF.CONFUSE, true);
         }
         if (telnetText.contains("Your body closes up some of your wounds")) {
-            flags.setHealing(true);
+            flags.put(PCF.HEALING, true);
         }
-
+        
         if (telnetText.contains("The refreshing effects of blood doping have worn off.")) {
-            flags.setDoping(true);
+            flags.put(PCF.DOPING, true);
+            
         }
-
+        
         if (telnetText.contains("died.") || telnetText.contains("Corpse of")) {
-            flags.setCorpse(true);
+            log.info("saw corpse!!!");
+            flags.put(PCF.CORPSE, true);
         }
-
+        
         if (telnetText.contains("You can only do this while fighting.")) {
-            flags.setConfuse(false);
+            flags.put(PCF.CONFUSE, false);
+            
         }
         if (telnetText.contains("You are fighting")) {
-            flags.setConfuse(true);
+            flags.put(PCF.CONFUSE, true);
+            
         }
         if (telnetText.contains("HP:")) {
-
+            
             try {
                 Pattern pattern = Pattern.compile("(\\w+): (\\d+)");
                 Matcher matcher = pattern.matcher(telnetText);
@@ -72,11 +78,11 @@ public class RegexWorker {
                         digitsOnly = m.group(1);
                     }
                 }
-                stats = new PlayerStats(stringEntries);
+                stats = new Stats(stringEntries);
             } catch (IllegalStateException e) {
             }
         }
-        PlayerCharacter.INSTANCE.setFlags(flags);  //do both
-        PlayerCharacter.INSTANCE.setStats(stats);
+        //PlayerCharacter.INSTANCE.setFlags(flags);  //do both
+        //PlayerCharacter.INSTANCE.setStats(stats);
     }
 }

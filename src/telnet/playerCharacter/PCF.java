@@ -1,11 +1,8 @@
-package telnet.game;
+package telnet.playerCharacter;
 
-public enum PlayerCharacterFlags {
-    FIGHT,
-    FLIGHT,
-    LOGGED_IN,
-    CORPSE;
-    private boolean bool;
+public enum PCF {
+
+    BACKSTAB, CONFUSE, CORPSE, DOPING, ENERVATE, HEARTPLUNGE, HEALING, LOGGEDIN;
 }
 
 /*

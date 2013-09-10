@@ -1,7 +1,7 @@
 package telnet;
 
-import telnet.game.Command;
-import telnet.game.PlayerCharacter;
+import telnet.playerCharacter.Command;
+import telnet.playerCharacter.Player;
 import static java.lang.System.out;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -21,6 +21,7 @@ import telnet.connection.CharacterDataQueueWorker;
 import telnet.connection.ConsoleReader;
 import telnet.connection.InputStreamWorker;
 import telnet.connection.PropertiesReader;
+import telnet.playerCharacter.PlayerController;
 
 public final class Controller implements Runnable, Observer {
 
@@ -31,8 +32,9 @@ public final class Controller implements Runnable, Observer {
     private CharacterDataQueueWorker characterDataQueueWorker = new CharacterDataQueueWorker();
     private ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue<>();
     private ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue<>();
-    private PlayerCharacter playerCharacter = PlayerCharacter.INSTANCE;
-
+    private Player playerCharacter = Player.INSTANCE;
+    private PlayerController cp = new PlayerController();
+    
     private Controller() {
     }
 
@@ -73,7 +75,8 @@ public final class Controller implements Runnable, Observer {
             if (o instanceof CharacterDataQueueWorker) {
                 String remoteOutputMessage = characterDataQueueWorker.getFinalData();
                 log.fine("starting regex.." + remoteOutputMessage);
-                newCommands = playerCharacter.processRemoteOutput(remoteOutputMessage);
+                //newCommands = playerCharacter.processRemoteOutput(remoteOutputMessage);
+                newCommands = cp.doLogic(remoteOutputMessage);
                 delay = 500;
             }
         } catch (NullPointerException npe) {
