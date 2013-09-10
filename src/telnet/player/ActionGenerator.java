@@ -72,7 +72,7 @@ public class ActionGenerator {
         EnumSet setOfCommands = EnumSet.noneOf(Actions.class);
         if (loggedIn) {
             if (corpse) {
-                
+                setOfCommands.addAll(healingActions());
             }
         }
         return setOfCommands;
