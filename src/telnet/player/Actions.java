@@ -1,5 +1,5 @@
-package telnet.playerCharacter;
+package telnet.player;
 
-public enum CmdEnum {
+public enum Actions {
     BACKSTAB, CONFUSE,DRAW, ENERVATE, HEARTPLUNGE,PROCESS;
 }

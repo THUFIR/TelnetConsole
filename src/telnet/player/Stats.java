@@ -1,4 +1,4 @@
-package telnet.playerCharacter;
+package telnet.player;
 
 import java.util.List;
 import java.util.Map.Entry;

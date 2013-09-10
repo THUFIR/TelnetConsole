@@ -1,13 +1,13 @@
-package telnet.playerCharacter;
+package telnet.player;
 
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
-public class CommandProcessor {
+public class ActionGenerator {
 
-    private final static Logger log = Logger.getLogger(PlayerController.class.getName());
+    private final static Logger log = Logger.getLogger(PLayerController.class.getName());
     private Player playerCharacter = Player.INSTANCE;
     private boolean backstab = false;
     private boolean confuse = false;
@@ -18,24 +18,24 @@ public class CommandProcessor {
     private boolean healing = false;
     private boolean loggedIn = false;
 
-    public CommandProcessor() {
+    public ActionGenerator() {
     }
 
-    private EnumSet confuseEnums() {
-        EnumSet es = EnumSet.noneOf(CmdEnum.class);
-        es.add(CmdEnum.CONFUSE);
-        es.add(CmdEnum.BACKSTAB);
+    private EnumSet attackActions() {
+        EnumSet es = EnumSet.noneOf(Actions.class);
+        es.add(Actions.CONFUSE);
+        es.add(Actions.BACKSTAB);
         return es;
     }
 
-    private EnumSet corpseEnums() {
-        EnumSet es = EnumSet.noneOf(CmdEnum.class);
-        es.add(CmdEnum.DRAW);
-        es.add(CmdEnum.PROCESS);
+    private EnumSet healingActions() {
+        EnumSet es = EnumSet.noneOf(Actions.class);
+        es.add(Actions.DRAW);
+        es.add(Actions.PROCESS);
         return es;
     }
 
-    private void populate() {
+    private void getPlayerState() {
         Map<Flags, Boolean> flaggs = Player.INSTANCE.getFlags();
         log.info(flaggs.toString());
         for (Entry<Flags, Boolean> entry : playerCharacter.getFlags().entrySet()) {
@@ -67,9 +67,14 @@ public class CommandProcessor {
         }
     }
 
-    public EnumSet doLogic() {
+    public EnumSet generateActions() {
         Map<Flags, Boolean> flaggs = Player.INSTANCE.getFlags();
-        EnumSet setOfCommands = EnumSet.noneOf(CmdEnum.class);
+        EnumSet setOfCommands = EnumSet.noneOf(Actions.class);
+        if (loggedIn) {
+            if (corpse) {
+                
+            }
+        }
         return setOfCommands;
     }
 }

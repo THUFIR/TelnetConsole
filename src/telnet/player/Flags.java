@@ -1,4 +1,4 @@
-package telnet.playerCharacter;
+package telnet.player;
 
 public enum Flags {
 

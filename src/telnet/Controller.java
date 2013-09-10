@@ -1,7 +1,7 @@
 package telnet;
 
 import java.util.logging.Level;
-import telnet.playerCharacter.Player;
+import telnet.player.Player;
 import static java.lang.System.out;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,8 +23,8 @@ import telnet.connection.Command;
 import telnet.connection.ConsoleReader;
 import telnet.connection.InputStreamWorker;
 import telnet.connection.PropertiesReader;
-import telnet.playerCharacter.CmdEnum;
-import telnet.playerCharacter.PlayerController;
+import telnet.player.Actions;
+import telnet.player.PLayerController;
 
 public final class Controller implements Runnable, Observer {
 
@@ -34,9 +34,9 @@ public final class Controller implements Runnable, Observer {
     private ConsoleReader localInputReader = new ConsoleReader();
     private CharacterDataQueueWorker characterDataQueueWorker = new CharacterDataQueueWorker();
     private ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue<>();
-    private EnumSet commandsEnums = EnumSet.noneOf(CmdEnum.class);
+    private EnumSet commandsEnums = EnumSet.noneOf(Actions.class);
     private Player playerCharacter = Player.INSTANCE;
-    private PlayerController cp = new PlayerController();
+    private PLayerController cp = new PLayerController();
 
     private Controller() {
     }
@@ -53,7 +53,7 @@ public final class Controller implements Runnable, Observer {
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
         String commandString = null;
-        Queue<CmdEnum> commandsQueue = new PriorityQueue<>(commandsEnums);
+        Queue<Actions> commandsQueue = new PriorityQueue<>(commandsEnums);
         while (!commandsQueue.isEmpty()) {
             try {
                 commandBytes = commandsQueue.remove().toString().getBytes();
@@ -82,7 +82,7 @@ public final class Controller implements Runnable, Observer {
     @Override
     public void update(Observable o, Object arg) {
         long delay = 0;
-        Queue<CmdEnum> newCommands = new PriorityQueue<>();
+        Queue<Actions> newCommands = new PriorityQueue<>();
         log.fine("updating...");
         EnumSet setOfNewCommands;
         try {

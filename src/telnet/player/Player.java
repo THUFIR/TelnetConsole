@@ -1,4 +1,4 @@
-package telnet.playerCharacter;
+package telnet.player;
 
 import java.util.EnumMap;
 import java.util.Map;

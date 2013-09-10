@@ -1,4 +1,4 @@
-package telnet.playerCharacter;
+package telnet.player;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
