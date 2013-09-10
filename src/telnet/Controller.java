@@ -76,7 +76,7 @@ public final class Controller implements Runnable, Observer {
                 String remoteOutputMessage = characterDataQueueWorker.getFinalData();
                 log.fine("starting regex.." + remoteOutputMessage);
                 //newCommands = playerCharacter.processRemoteOutput(remoteOutputMessage);
-                newCommands = cp.doLogic(remoteOutputMessage);
+                newCommands = cp.processGameData(remoteOutputMessage);
                 delay = 500;
             }
         } catch (NullPointerException npe) {
