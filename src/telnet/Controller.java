@@ -1,6 +1,6 @@
 package telnet;
 
-import telnet.playerCharacter.Command;
+import java.util.logging.Level;
 import telnet.playerCharacter.Player;
 import static java.lang.System.out;
 import java.io.IOException;
@@ -8,19 +8,22 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.LinkedList;
+import java.util.EnumSet;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.PriorityQueue;
 import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 import org.apache.commons.net.telnet.TelnetClient;
 import telnet.connection.CharacterDataQueueWorker;
+import telnet.connection.Command;
 import telnet.connection.ConsoleReader;
 import telnet.connection.InputStreamWorker;
 import telnet.connection.PropertiesReader;
+import telnet.playerCharacter.CmdEnum;
 import telnet.playerCharacter.PlayerController;
 
 public final class Controller implements Runnable, Observer {
@@ -31,10 +34,10 @@ public final class Controller implements Runnable, Observer {
     private ConsoleReader localInputReader = new ConsoleReader();
     private CharacterDataQueueWorker characterDataQueueWorker = new CharacterDataQueueWorker();
     private ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue<>();
-    private ConcurrentLinkedQueue<Command> commandsQueue = new ConcurrentLinkedQueue<>();
+    private EnumSet commandsEnums = EnumSet.noneOf(CmdEnum.class);
     private Player playerCharacter = Player.INSTANCE;
     private PlayerController cp = new PlayerController();
-    
+
     private Controller() {
     }
 
@@ -46,19 +49,20 @@ public final class Controller implements Runnable, Observer {
         characterDataQueueWorker.addObserver(this);
     }
 
-    private void executeCommands(long delay) {
+    private void ExecuteCommandsEnums(long delay) {
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
         String commandString = null;
+        Queue<CmdEnum> commandsQueue = new PriorityQueue<>(commandsEnums);
         while (!commandsQueue.isEmpty()) {
             try {
-                commandBytes = commandsQueue.remove().getCommand().getBytes();
+                commandBytes = commandsQueue.remove().toString().getBytes();
                 outputStream.write(commandBytes);
                 outputStream.write(13);
                 outputStream.write(10);
                 outputStream.flush();
                 commandString = new String(commandBytes, "UTF-8");
-                log.fine(commandString + "\t" + commandBytes);
+                log.log(Level.FINE, "{0}\t{1}", new Object[]{commandString, commandBytes});
                 Thread.sleep(delay);   //don't hammer the server???  in microseconds
             } catch (InterruptedException | IOException | NoSuchElementException ex) {
             } finally {
@@ -66,33 +70,44 @@ public final class Controller implements Runnable, Observer {
         }
     }
 
+    private void execCmdStr(Command cmd) throws IOException {
+        byte[] commandBytes = cmd.getCommand().getBytes();
+        OutputStream outputStream = telnetClient.getOutputStream();
+        outputStream.write(commandBytes);
+        outputStream.write(13);
+        outputStream.write(10);
+        outputStream.flush();
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         long delay = 0;
-        Queue<Command> newCommands = new LinkedList<>();
+        Queue<CmdEnum> newCommands = new PriorityQueue<>();
         log.fine("updating...");
+        EnumSet setOfNewCommands;
         try {
             if (o instanceof CharacterDataQueueWorker) {
                 String remoteOutputMessage = characterDataQueueWorker.getFinalData();
-                log.fine("starting regex.." + remoteOutputMessage);
+                log.log(Level.FINE, "starting regex..{0}", remoteOutputMessage);
                 //newCommands = playerCharacter.processRemoteOutput(remoteOutputMessage);
-                newCommands = cp.processGameData(remoteOutputMessage);
+                setOfNewCommands = cp.processGameData(remoteOutputMessage);
+                newCommands = new PriorityQueue<>(setOfNewCommands);
                 delay = 500;
             }
+            commandsEnums.addAll(newCommands);
+            ExecuteCommandsEnums(delay);
         } catch (NullPointerException npe) {
             log.fine(npe.toString());
         }
 
         if (o instanceof ConsoleReader) {
-            String commandString = localInputReader.getCommand();
-            Command command = new Command(commandString);
-            newCommands.add(command);
+            try {
+                String commandString = localInputReader.getCommand();
+                Command command = new Command(commandString);
+                execCmdStr(command);
+            } catch (IOException ex) {
+            }
         }
-        for (Command c : newCommands) {
-            log.fine(c.toString());
-        }
-        commandsQueue.addAll(newCommands);
-        executeCommands(delay);
     }
 
     @Override

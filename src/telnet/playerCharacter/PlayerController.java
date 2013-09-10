@@ -1,6 +1,7 @@
 package telnet.playerCharacter;
 
 import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,13 +17,10 @@ public class PlayerController {
     public PlayerController(/*Map<PCF, Boolean> flags*/) {
     }
 
-    public Queue<Command> processGameData(String gameData) {
+    public EnumSet processGameData(String gameData) {
         log.fine(playerCharacter.getFlags().toString());
         RegexWorker rw = new RegexWorker();
         rw.parseAndUpdatePlayerCharacter(gameData);
-
-        Queue<Command> commands = cp.doLogic();
-
-        return commands;
+        return cp.doLogic();
     }
 }

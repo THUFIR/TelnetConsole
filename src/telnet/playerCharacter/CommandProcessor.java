@@ -20,7 +20,7 @@ public class CommandProcessor {
         es.add(CmdEnum.BACKSTAB);
         return es;
     }
-    
+
     private EnumSet corpseEnums() {
         EnumSet es = EnumSet.noneOf(CmdEnum.class);
         es.add(CmdEnum.DRAW);
@@ -28,23 +28,19 @@ public class CommandProcessor {
         return es;
     }
 
-
-
-    public Queue<Command> doLogic() {
+    public EnumSet doLogic() {
         log.fine(playerCharacter.getFlags().toString());
-        Queue<Command> commands = new LinkedList<>();
-
+        EnumSet es = EnumSet.noneOf(CmdEnum.class);
         for (Entry<PCF, Boolean> entry : playerCharacter.getFlags().entrySet()) {
             PCF key = entry.getKey();
             Boolean val = entry.getValue();
             switch (key) {
-                case CONFUSE:
-                    log.info("ok, confuzed..");
+                case CORPSE:
+                    log.info("corpse detected..");
+                    es.addAll(corpseEnums());
                     break;
             }
         }
-
-
-        return commands;
+        return es;
     }
 }
