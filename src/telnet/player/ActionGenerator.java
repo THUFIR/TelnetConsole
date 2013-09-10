@@ -23,17 +23,20 @@ public class ActionGenerator {
     }
 
     private EnumSet attackActions() {
-        EnumSet es = EnumSet.noneOf(Actions.class);
-        es.add(Actions.CONFUSE);
-        es.add(Actions.BACKSTAB);
-        return es;
+        EnumSet actions = EnumSet.noneOf(Actions.class);
+        actions.add(Actions.CONFUSE);
+        actions.add(Actions.BACKSTAB);
+        return actions;
     }
 
-    private EnumSet healingActions() {
-        EnumSet es = EnumSet.noneOf(Actions.class);
-        es.add(Actions.DRAW);
-        es.add(Actions.PROCESS);
-        return es;
+    private EnumSet killedMonsterActions() {
+        EnumSet actions = EnumSet.noneOf(Actions.class);
+        actions.add(Actions.DRAW);
+        actions.add(Actions.PROCESS);
+        Map<Flags, Boolean> pflags = Player.INSTANCE.getFlags();
+        pflags.put(Flags.CORPSE, false);
+        Player.INSTANCE.setFlags(pflags);
+        return actions;
     }
 
     private void initBooleanState() {
@@ -69,11 +72,12 @@ public class ActionGenerator {
     }
 
     public EnumSet generateActions() {
+        log.info("trying actions...");
         initBooleanState();
         EnumSet setOfCommands = EnumSet.noneOf(Actions.class);
         if (loggedIn) {
             if (corpse) {
-                setOfCommands.addAll(healingActions());
+                setOfCommands.addAll(killedMonsterActions());
                 log.log(Level.INFO, "ok, doing healing :){0}", setOfCommands);
             }
         }
