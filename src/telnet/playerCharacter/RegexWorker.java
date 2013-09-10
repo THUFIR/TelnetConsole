@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 public class RegexWorker {
     
     private final static Logger log = Logger.getLogger(RegexWorker.class.getName());
-//    private PlayerFlags flags = new PlayerFlags();// = PlayerCharacter.INSTANCE.getFlags();
     private Stats stats = new Stats();// = PlayerCharacter.INSTANCE.getStats();
     private Map<Flags, Boolean> flags = new EnumMap(Flags.class);
     
@@ -82,7 +81,7 @@ public class RegexWorker {
             } catch (IllegalStateException e) {
             }
         }
-        //PlayerCharacter.INSTANCE.setFlags(flags);  //do both
+        Player.INSTANCE.setFlags(flags);  //do both
         //PlayerCharacter.INSTANCE.setStats(stats);
     }
 }
