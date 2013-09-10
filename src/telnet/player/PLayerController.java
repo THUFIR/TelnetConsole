@@ -17,6 +17,7 @@ public class PLayerController {
         log.fine(playerCharacter.getFlags().toString());
         RegexWorker rw = new RegexWorker();
         Map<Flags, Boolean> flags = rw.parseAndUpdatePlayerCharacter(gameData);
+        log.info(flags.toString());
         return actionGenerator.generateActions(flags);
     }
 }
