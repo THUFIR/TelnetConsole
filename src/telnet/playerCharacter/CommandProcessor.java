@@ -29,7 +29,7 @@ public class CommandProcessor {
     }
 
     public EnumSet doLogic() {
-        log.fine(playerCharacter.getFlags().toString());
+        log.info(playerCharacter.getFlags().toString());
         EnumSet es = EnumSet.noneOf(CmdEnum.class);
         for (Entry<PCF, Boolean> entry : playerCharacter.getFlags().entrySet()) {
             PCF key = entry.getKey();
