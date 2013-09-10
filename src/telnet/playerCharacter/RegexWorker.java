@@ -15,7 +15,7 @@ public class RegexWorker {
     private final static Logger log = Logger.getLogger(RegexWorker.class.getName());
 //    private PlayerFlags flags = new PlayerFlags();// = PlayerCharacter.INSTANCE.getFlags();
     private Stats stats = new Stats();// = PlayerCharacter.INSTANCE.getStats();
-    private Map<PCF, Boolean> flags = new EnumMap(PCF.class);
+    private Map<Flags, Boolean> flags = new EnumMap(Flags.class);
     
     public RegexWorker() {
     }
@@ -30,32 +30,32 @@ public class RegexWorker {
         String digitsOnly = null;
         
         if (telnetText.contains("Taking over link-dead copy.") || telnetText.contains("You already have an active copy. Taking it over.")) {
-            flags.put(PCF.LOGGEDIN, true);
+            flags.put(Flags.LOGGEDIN, true);
         }
         
         if (telnetText.contains("You feel crafty enough to try to confuse your enemy again.")) {
-            flags.put(PCF.CONFUSE, true);
+            flags.put(Flags.CONFUSE, true);
         }
         if (telnetText.contains("Your body closes up some of your wounds")) {
-            flags.put(PCF.HEALING, true);
+            flags.put(Flags.HEALING, true);
         }
         
         if (telnetText.contains("The refreshing effects of blood doping have worn off.")) {
-            flags.put(PCF.DOPING, true);
+            flags.put(Flags.DOPING, true);
             
         }
         
         if (telnetText.contains("died.") || telnetText.contains("Corpse of")) {
             log.info("saw corpse!!!");
-            flags.put(PCF.CORPSE, true);
+            flags.put(Flags.CORPSE, true);
         }
         
         if (telnetText.contains("You can only do this while fighting.")) {
-            flags.put(PCF.CONFUSE, false);
+            flags.put(Flags.CONFUSE, false);
             
         }
         if (telnetText.contains("You are fighting")) {
-            flags.put(PCF.CONFUSE, true);
+            flags.put(Flags.CONFUSE, true);
             
         }
         if (telnetText.contains("HP:")) {

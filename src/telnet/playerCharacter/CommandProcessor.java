@@ -31,8 +31,8 @@ public class CommandProcessor {
     public EnumSet doLogic() {
         log.info(playerCharacter.getFlags().toString());
         EnumSet es = EnumSet.noneOf(CmdEnum.class);
-        for (Entry<PCF, Boolean> entry : playerCharacter.getFlags().entrySet()) {
-            PCF key = entry.getKey();
+        for (Entry<Flags, Boolean> entry : playerCharacter.getFlags().entrySet()) {
+            Flags key = entry.getKey();
             Boolean val = entry.getValue();
             switch (key) {
                 case CORPSE:

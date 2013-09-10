@@ -1,105 +1,53 @@
 package telnet.playerCharacter;
 
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.logging.Logger;
+public enum Flags {
 
-public class Flags {
+    BACKSTAB, CONFUSE, CORPSE, DOPING, ENERVATE, HEARTPLUNGE, HEALING, LOGGEDIN;
+}
 
-    private final static Logger log = Logger.getLogger(Flags.class.getName());
-    private boolean backstab = false;
-    private boolean heartplunge = false;
-    private boolean enervate = false;
-    private boolean confuse = false;
-    private boolean corpse = false;
-    private boolean loggedIn = true;
-    private boolean doping = false;
-    private boolean healing = false;
+/*
+ * 
+ * 
+ * 
+ * 
+ * 
+ * package enums;
 
-    public Flags() {
-    }
+import java.util.EnumMap;
+import java.util.Map;
 
-    Flags(List<Entry> flagsEntries) {
-        String key = null;
-        boolean val = false;
+public class Enums {
 
+    //    private Map<PlayerCharacterFlags, Boolean> ef = new EnumMap(PlayerCharacterFlags.class);
+    private static Map<Flags, Boolean> m = new EnumMap(Flags.class);
 
-        switch (key) {
-            case "loggedIn":
-                loggedIn = val;
-                break;
-            case "confuse":
-                confuse = val;
-                break;
+    public static void main(String[] args) {
+        System.out.println("values are");
+        for (Flags flag : Flags.values()) {
+            System.out.println(flag);
+        }
+        System.out.println("fight enum..");
+        Flags fight = Flags.FIGHT;
+        System.out.println(fight);
+
+            Flags f = Flags.FIGHT;
+            boolean b = false;
+            m.put(f, b);
+
+            Flags fl = Flags.FLIGHT;
+            boolean b2 = true;
+            m.put(fl, b2);
+
+        //for (Map.Entry<String, String> entry : map.entrySet())
+
+        for (Map.Entry<Flags, Boolean> entry : m.entrySet()) {
+            System.out.println(entry.getKey()+entry.getValue().toString());
         }
     }
-
-    public boolean isBackstab() {
-        return backstab;
-    }
-
-    public void setBackstab(boolean backstab) {
-        this.backstab = backstab;
-    }
-
-    public boolean isHeartplunge() {
-        return heartplunge;
-    }
-
-    public void setHeartplunge(boolean heartplunge) {
-        this.heartplunge = heartplunge;
-    }
-
-    public boolean isEnervate() {
-        return enervate;
-    }
-
-    public void setEnervate(boolean enervate) {
-        this.enervate = enervate;
-    }
-
-    public boolean isConfuse() {
-        return confuse;
-    }
-
-    public void setConfuse(boolean confuse) {
-        this.confuse = confuse;
-    }
-
-    public boolean isCorpse() {
-        return corpse;
-    }
-
-    public void setCorpse(boolean corpse) {
-        this.corpse = corpse;
-        log.fine("corpse\t" + this.corpse);
-    }
-
-    public boolean isLoggedIn() {
-        return loggedIn;
-    }
-
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
-
-    public boolean isDoping() {
-        return doping;
-    }
-
-    public void setDoping(boolean doping) {
-        this.doping = doping;
-    }
-
-    public boolean isHealing() {
-        return healing;
-    }
-
-    public void setHealing(boolean healing) {
-        this.healing = healing;
-    }
-
-    public String toString() {
-        return "corpse\t" + corpse;
-    }
 }
+
+ * 
+ * 
+ * 
+ * 
+ */
