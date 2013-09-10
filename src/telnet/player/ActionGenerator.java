@@ -41,7 +41,7 @@ public class ActionGenerator {
 
     private void initBooleanState() {
         Map<Flags, Boolean> flaggs = Player.INSTANCE.getFlags();
-        log.info(flaggs.toString());
+        log.fine(flaggs.toString());
         for (Entry<Flags, Boolean> entry : playerCharacter.getFlags().entrySet()) {
             Flags key = entry.getKey();
             Boolean val = entry.getValue();
@@ -72,15 +72,14 @@ public class ActionGenerator {
     }
 
     public EnumSet generateActions() {
-        log.info("trying actions...");
+        log.fine("trying actions...");
         initBooleanState();
-        EnumSet setOfCommands = EnumSet.noneOf(Actions.class);
+        EnumSet setOfActions = EnumSet.noneOf(Actions.class);
         if (loggedIn) {
             if (corpse) {
-                setOfCommands.addAll(killedMonsterActions());
-                log.log(Level.INFO, "ok, doing healing :){0}", setOfCommands);
+                setOfActions.addAll(killedMonsterActions());
             }
         }
-        return setOfCommands;
+        return setOfActions;
     }
 }

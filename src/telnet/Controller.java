@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 import org.apache.commons.net.telnet.TelnetClient;
 import telnet.connection.CharacterDataQueueWorker;
-import telnet.connection.Command;
+import telnet.connection.UserActions;
 import telnet.connection.ConsoleReader;
 import telnet.connection.InputStreamWorker;
 import telnet.connection.PropertiesReader;
@@ -34,7 +34,7 @@ public final class Controller implements Runnable, Observer {
     private ConsoleReader localInputReader = new ConsoleReader();
     private CharacterDataQueueWorker characterDataQueueWorker = new CharacterDataQueueWorker();
     private ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue<>();
-    private EnumSet commandsEnums = EnumSet.noneOf(Actions.class);
+    private EnumSet actions = EnumSet.noneOf(Actions.class);
     private Player playerCharacter = Player.INSTANCE;
     private PLayerController cp = new PLayerController();
 
@@ -53,7 +53,7 @@ public final class Controller implements Runnable, Observer {
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
         String commandString = null;
-        Queue<Actions> commandsQueue = new PriorityQueue<>(commandsEnums);
+        Queue<Actions> commandsQueue = new PriorityQueue<>(actions);
         while (!commandsQueue.isEmpty()) {
             try {
                 commandBytes = commandsQueue.remove().toString().getBytes();
@@ -70,7 +70,7 @@ public final class Controller implements Runnable, Observer {
         }
     }
 
-    private void execCmdStr(Command cmd) throws IOException {
+    private void executeUserAction(UserActions cmd) throws IOException {
         byte[] commandBytes = cmd.getCommand().getBytes();
         OutputStream outputStream = telnetClient.getOutputStream();
         outputStream.write(commandBytes);
@@ -84,17 +84,17 @@ public final class Controller implements Runnable, Observer {
         long delay = 0;
         Queue<Actions> newCommands = new PriorityQueue<>();
         log.fine("updating...");
-        EnumSet setOfNewCommands;
+        actions = EnumSet.noneOf(Actions.class);
+        EnumSet newActions = EnumSet.noneOf(Actions.class);
         try {
             if (o instanceof CharacterDataQueueWorker) {
                 String remoteOutputMessage = characterDataQueueWorker.getFinalData();
                 log.log(Level.FINE, "starting regex..{0}", remoteOutputMessage);
-                //newCommands = playerCharacter.processRemoteOutput(remoteOutputMessage);
-                setOfNewCommands = cp.processGameData(remoteOutputMessage);
-                newCommands = new PriorityQueue<>(setOfNewCommands);
+                newActions = cp.processGameData(remoteOutputMessage);
+                newCommands = new PriorityQueue<>(newActions);
                 delay = 500;
             }
-            commandsEnums.addAll(newCommands);
+            actions.addAll(newCommands);
             ExecuteCommandsEnums(delay);
         } catch (NullPointerException npe) {
             log.fine(npe.toString());
@@ -103,8 +103,8 @@ public final class Controller implements Runnable, Observer {
         if (o instanceof ConsoleReader) {
             try {
                 String commandString = localInputReader.getCommand();
-                Command command = new Command(commandString);
-                execCmdStr(command);
+                UserActions action = new UserActions(commandString);
+                executeUserAction(action);
             } catch (IOException ex) {
             }
         }

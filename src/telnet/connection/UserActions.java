@@ -1,10 +1,10 @@
 package telnet.connection;
 
-public class Command {
+public class UserActions {
 
     private String command;
 
-    public Command(String command) {
+    public UserActions(String command) {
         this.command = command.toLowerCase();
     }
 
