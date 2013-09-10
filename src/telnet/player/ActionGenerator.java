@@ -69,12 +69,12 @@ public class ActionGenerator {
     }
 
     public EnumSet generateActions(Map<Flags, Boolean> flags) {
-        log.log(Level.FINE, "ok, doing healing :){0}", flags);
+        getPlayerState();
         EnumSet setOfCommands = EnumSet.noneOf(Actions.class);
         if (loggedIn) {
             if (corpse) {
                 setOfCommands.addAll(healingActions());
-                log.info("ok, doing healing :)" + setOfCommands);
+                log.log(Level.INFO, "ok, doing healing :){0}", setOfCommands);
             }
         }
         return setOfCommands;
