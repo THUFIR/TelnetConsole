@@ -7,7 +7,7 @@ import java.util.Queue;
  
 public enum Flag {
  
-    FIGHT() {
+    BACKSTAB() {
  
         @Override
         Queue<Action> apply() {
@@ -17,14 +17,71 @@ public enum Flag {
             return actions;
         }
     },
-    HEAL() {
+    CONFUSE() {
  
         @Override
         Queue<Action> apply() {
             Deque<Action> actions = new ArrayDeque<>();
-            actions.add(Action.DRAW);
-            actions.add(Action.PROCESS);
+            actions.add(Action.BACKSTAB);
+            actions.add(Action.CONFUSE);
+            return actions;
+        }
+    },
+    CORPSE() {
  
+        @Override
+        Queue<Action> apply() {
+            Deque<Action> actions = new ArrayDeque<>();
+            actions.add(Action.BACKSTAB);
+            actions.add(Action.CONFUSE);
+            return actions;
+        }
+    },
+    HEALING() {
+ 
+        @Override
+        Queue<Action> apply() {
+            Deque<Action> actions = new ArrayDeque<>();
+            actions.add(Action.BACKSTAB);
+            actions.add(Action.CONFUSE);
+            return actions;
+        }
+    },
+    DOPING() {
+ 
+        @Override
+        Queue<Action> apply() {
+            Deque<Action> actions = new ArrayDeque<>();
+            actions.add(Action.BACKSTAB);
+            actions.add(Action.CONFUSE);
+            return actions;
+        }
+    },
+    ENERVATE() {
+ 
+        @Override
+        Queue<Action> apply() {
+            Deque<Action> actions = new ArrayDeque<>();
+            actions.add(Action.BACKSTAB);
+            actions.add(Action.CONFUSE);
+            return actions;
+        }
+    },
+    HEARTPLUNGE() {
+ 
+        @Override
+        Queue<Action> apply() {
+            Deque<Action> actions = new ArrayDeque<>();
+            actions.add(Action.BACKSTAB);
+            actions.add(Action.CONFUSE);
+            return actions;
+        }
+    },
+    LOGGEDIN() {
+ 
+        @Override
+        Queue<Action> apply() {
+            Deque<Action> actions = new ArrayDeque<>();
             return actions;
         }
     };

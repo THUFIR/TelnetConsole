@@ -32,9 +32,7 @@ public class ActionGenerator {
         EnumSet actions = EnumSet.noneOf(Action.class);
         actions.add(Action.DRAW);
         actions.add(Action.PROCESS);
-        Map<Flag, Boolean> pflags = Player.INSTANCE.getFlags();
-        pflags.put(Flag.CORPSE, false);
-        Player.INSTANCE.setFlags(pflags);
+        Player.INSTANCE.setFlag(Flag.CORPSE, false);
         return actions;
     }
 
