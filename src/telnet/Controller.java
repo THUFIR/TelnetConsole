@@ -54,9 +54,14 @@ public final class Controller implements Runnable, Observer {
         OutputStream outputStream = telnetClient.getOutputStream();
         String commandString = null;
         Deque<Action> commandsQueue = new ArrayDeque<>(actions);
+        String s = null;
         while (!commandsQueue.isEmpty()) {
             try {
-                commandBytes = commandsQueue.remove().toString().toLowerCase().getBytes();
+                s = commandsQueue.remove().toString().toLowerCase();
+                if (s == "process") {
+                    s = "process corpse";
+                }
+                commandBytes = s.getBytes();
                 outputStream.write(commandBytes);
                 outputStream.write(13);
                 outputStream.write(10);

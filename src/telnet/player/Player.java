@@ -34,16 +34,6 @@ public enum Player {
         return flagMap;
     }
 
-    /*
-    public void setFlags(Map<Flag, Boolean> newFlags) {
-        flagMap.putAll(newFlags);
-        log.fine(flagMap.toString());
-    }
-
-    public void putFlag(Map<Flag, Boolean> flag) {
-        flagMap.putAll(flag);
-    }*/
-
     void setFlag(Flag flag, boolean b) {
         flagMap.put(flag, b);
     }

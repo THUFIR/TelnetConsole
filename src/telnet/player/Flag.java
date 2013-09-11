@@ -1,6 +1,5 @@
 package telnet.player;
 
-
 import java.util.ArrayDeque;
 import java.util.Deque;
  
@@ -33,6 +32,7 @@ public enum Flag {
             Deque<Action> actions = new ArrayDeque<>();
             actions.add(Action.DRAW);
             actions.add(Action.TRANSFUSE);
+            actions.add(Action.PROCESS);   //actually syntax is "process corpse"
             return actions;
         }
     },
