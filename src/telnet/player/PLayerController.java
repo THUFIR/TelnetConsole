@@ -1,6 +1,6 @@
 package telnet.player;
 
-import java.util.EnumSet;
+import java.util.Deque;
 import java.util.logging.Logger;
 
 public class PLayerController {
@@ -8,13 +8,13 @@ public class PLayerController {
     private final static Logger log = Logger.getLogger(PLayerController.class.getName());
     private Player playerCharacter = Player.INSTANCE;
     private ActionGenerator actionGenerator = new ActionGenerator();
+    private RegexWorker rw = new RegexWorker();
 
     public PLayerController() {
     }
 
-    public EnumSet processGameData(String gameData) {
+    public Deque<Action> processGameData(String gameData) {
         log.fine(playerCharacter.getFlags().toString());
-        RegexWorker rw = new RegexWorker();
         rw.parseAndUpdatePlayerCharacter(gameData);
         log.fine("updated character??...I think...");
         return actionGenerator.generateActions();

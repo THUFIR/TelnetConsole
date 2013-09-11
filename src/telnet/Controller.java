@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.EnumSet;
 import java.util.NoSuchElementException;
 import java.util.Observable;
@@ -82,16 +84,18 @@ public final class Controller implements Runnable, Observer {
     @Override
     public void update(Observable o, Object arg) {
         long delay = 0;
-        Queue<Action> newCommands = new PriorityQueue<>();
+        Deque<Action> newCommands = new ArrayDeque<>();
         log.fine("updating...");
         actions = EnumSet.noneOf(Action.class);
-        EnumSet newActions = EnumSet.noneOf(Action.class);
+        //EnumSet newActions = EnumSet.noneOf(Action.class);
+        Deque<Action> newActions = new ArrayDeque<>();
         try {
             if (o instanceof CharacterDataQueueWorker) {
                 String remoteOutputMessage = characterDataQueueWorker.getFinalData();
                 log.log(Level.FINE, "starting regex..{0}", remoteOutputMessage);
                 newActions = cp.processGameData(remoteOutputMessage);
-                newCommands = new PriorityQueue<>(newActions);
+//                newCommands = new PriorityQueue<>(newActions);\
+                newCommands = new ArrayDeque<>(newActions);
                 delay = 500;
             }
             actions.addAll(newCommands);

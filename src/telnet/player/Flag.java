@@ -3,14 +3,13 @@ package telnet.player;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Queue;
  
 public enum Flag {
  
     BACKSTAB() {
  
         @Override
-        Queue<Action> apply() {
+        Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
             actions.add(Action.BACKSTAB);
             actions.add(Action.CONFUSE);
@@ -20,7 +19,7 @@ public enum Flag {
     CONFUSE() {
  
         @Override
-        Queue<Action> apply() {
+        Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
             actions.add(Action.BACKSTAB);
             actions.add(Action.CONFUSE);
@@ -30,7 +29,7 @@ public enum Flag {
     CORPSE() {
  
         @Override
-        Queue<Action> apply() {
+        Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
             actions.add(Action.BACKSTAB);
             actions.add(Action.CONFUSE);
@@ -40,7 +39,7 @@ public enum Flag {
     HEALING() {
  
         @Override
-        Queue<Action> apply() {
+        Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
             actions.add(Action.BACKSTAB);
             actions.add(Action.CONFUSE);
@@ -50,7 +49,7 @@ public enum Flag {
     DOPING() {
  
         @Override
-        Queue<Action> apply() {
+        Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
             actions.add(Action.BACKSTAB);
             actions.add(Action.CONFUSE);
@@ -60,7 +59,7 @@ public enum Flag {
     ENERVATE() {
  
         @Override
-        Queue<Action> apply() {
+        Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
             actions.add(Action.BACKSTAB);
             actions.add(Action.CONFUSE);
@@ -70,7 +69,7 @@ public enum Flag {
     HEARTPLUNGE() {
  
         @Override
-        Queue<Action> apply() {
+        Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
             actions.add(Action.BACKSTAB);
             actions.add(Action.CONFUSE);
@@ -80,11 +79,11 @@ public enum Flag {
     LOGGEDIN() {
  
         @Override
-        Queue<Action> apply() {
+        Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
             return actions;
         }
     };
 
-    abstract Queue<Action> apply();
+    abstract Deque<Action> getActionsForState();
 }

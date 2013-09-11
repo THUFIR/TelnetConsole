@@ -21,7 +21,7 @@ public class RegexWorker {
 
     public void parseAndUpdatePlayerCharacter(String telnetText) {
         log.fine(telnetText);
-     //   flags = Player.INSTANCE.getFlags();
+        //   flags = Player.INSTANCE.getFlags();
         stats = Player.INSTANCE.getStats();
         String command = null;
         String keyName = null;
@@ -29,35 +29,32 @@ public class RegexWorker {
         String digitsOnly = null;
 
         if (telnetText.contains("Taking over link-dead copy.") || telnetText.contains("You already have an active copy. Taking it over.")) {
-            Flag flag = Flag.LOGGEDIN;
-            Player.INSTANCE.setFlag(flag,true);  //do both
-  //          flags.put(Flag.LOGGEDIN, true);
+            Player.INSTANCE.setFlag(Flag.LOGGEDIN, true);
+            //          flags.put(Flag.LOGGEDIN, true);
         }
 
         if (telnetText.contains("You feel crafty enough to try to confuse your enemy again.")) {
-    //        flags.put(Flag.CONFUSE, true);
+            //        flags.put(Flag.CONFUSE, true);
         }
         if (telnetText.contains("Your body closes up some of your wounds")) {
-      //      flags.put(Flag.HEALING, true);
+            //      flags.put(Flag.HEALING, true);
         }
 
         if (telnetText.contains("The refreshing effects of blood doping have worn off.")) {
- //           flags.put(Flag.DOPING, true);
-
+            //           flags.put(Flag.DOPING, true);
         }
 
         if (telnetText.contains("died.") || telnetText.contains("Corpse of")) {
             log.info("saw corpse!!!");
-   //         flags.put(Flag.CORPSE, true);
+            Player.INSTANCE.setFlag(Flag.CORPSE, true);
+            //         flags.put(Flag.CORPSE, true);
         }
 
         if (telnetText.contains("You can only do this while fighting.")) {
-     //       flags.put(Flag.CONFUSE, false);
-
+            //       flags.put(Flag.CONFUSE, false);
         }
         if (telnetText.contains("You are fighting")) {
 //            flags.put(Flag.CONFUSE, true);
-
         }
         if (telnetText.contains("HP:")) {
 
