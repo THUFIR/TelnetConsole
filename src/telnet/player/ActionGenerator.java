@@ -22,27 +22,27 @@ public class ActionGenerator {
     }
 
     private EnumSet attackActions() {
-        EnumSet actions = EnumSet.noneOf(Actions.class);
-        actions.add(Actions.CONFUSE);
-        actions.add(Actions.BACKSTAB);
+        EnumSet actions = EnumSet.noneOf(Action.class);
+        actions.add(Action.CONFUSE);
+        actions.add(Action.BACKSTAB);
         return actions;
     }
 
     private EnumSet killedMonsterActions() {
-        EnumSet actions = EnumSet.noneOf(Actions.class);
-        actions.add(Actions.DRAW);
-        actions.add(Actions.PROCESS);
-        Map<Flags, Boolean> pflags = Player.INSTANCE.getFlags();
-        pflags.put(Flags.CORPSE, false);
+        EnumSet actions = EnumSet.noneOf(Action.class);
+        actions.add(Action.DRAW);
+        actions.add(Action.PROCESS);
+        Map<Flag, Boolean> pflags = Player.INSTANCE.getFlags();
+        pflags.put(Flag.CORPSE, false);
         Player.INSTANCE.setFlags(pflags);
         return actions;
     }
 
     private void initBooleanState() {
-        Map<Flags, Boolean> flaggs = Player.INSTANCE.getFlags();
+        Map<Flag, Boolean> flaggs = Player.INSTANCE.getFlags();
         log.fine(flaggs.toString());
-        for (Entry<Flags, Boolean> entry : playerCharacter.getFlags().entrySet()) {
-            Flags key = entry.getKey();
+        for (Entry<Flag, Boolean> entry : playerCharacter.getFlags().entrySet()) {
+            Flag key = entry.getKey();
             Boolean val = entry.getValue();
             switch (key) {
                 case BACKSTAB:
@@ -73,7 +73,7 @@ public class ActionGenerator {
     public EnumSet generateActions() {
         log.fine("trying actions...");
         initBooleanState();
-        EnumSet setOfActions = EnumSet.noneOf(Actions.class);
+        EnumSet setOfActions = EnumSet.noneOf(Action.class);
         if (loggedIn) {
             if (corpse) {
                 setOfActions.addAll(killedMonsterActions());

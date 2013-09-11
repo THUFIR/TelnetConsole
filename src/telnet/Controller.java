@@ -23,7 +23,7 @@ import telnet.connection.UserActions;
 import telnet.connection.ConsoleReader;
 import telnet.connection.InputStreamWorker;
 import telnet.connection.PropertiesReader;
-import telnet.player.Actions;
+import telnet.player.Action;
 import telnet.player.PLayerController;
 
 public final class Controller implements Runnable, Observer {
@@ -34,7 +34,7 @@ public final class Controller implements Runnable, Observer {
     private ConsoleReader localInputReader = new ConsoleReader();
     private CharacterDataQueueWorker characterDataQueueWorker = new CharacterDataQueueWorker();
     private ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue<>();
-    private EnumSet actions = EnumSet.noneOf(Actions.class);
+    private EnumSet actions = EnumSet.noneOf(Action.class);
     private Player playerCharacter = Player.INSTANCE;
     private PLayerController cp = new PLayerController();
 
@@ -53,7 +53,7 @@ public final class Controller implements Runnable, Observer {
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
         String commandString = null;
-        Queue<Actions> commandsQueue = new PriorityQueue<>(actions);
+        Queue<Action> commandsQueue = new PriorityQueue<>(actions);
         while (!commandsQueue.isEmpty()) {
             try {
                 commandBytes = commandsQueue.remove().toString().getBytes();
@@ -82,10 +82,10 @@ public final class Controller implements Runnable, Observer {
     @Override
     public void update(Observable o, Object arg) {
         long delay = 0;
-        Queue<Actions> newCommands = new PriorityQueue<>();
+        Queue<Action> newCommands = new PriorityQueue<>();
         log.fine("updating...");
-        actions = EnumSet.noneOf(Actions.class);
-        EnumSet newActions = EnumSet.noneOf(Actions.class);
+        actions = EnumSet.noneOf(Action.class);
+        EnumSet newActions = EnumSet.noneOf(Action.class);
         try {
             if (o instanceof CharacterDataQueueWorker) {
                 String remoteOutputMessage = characterDataQueueWorker.getFinalData();

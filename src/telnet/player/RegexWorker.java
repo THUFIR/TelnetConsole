@@ -14,7 +14,7 @@ public class RegexWorker {
     
     private final static Logger log = Logger.getLogger(RegexWorker.class.getName());
     private Stats stats = new Stats();// = PlayerCharacter.INSTANCE.getStats();
-    private Map<Flags, Boolean> flags = new EnumMap(Flags.class);
+    private Map<Flag, Boolean> flags = new EnumMap(Flag.class);
     
     public RegexWorker() {
     }
@@ -29,32 +29,32 @@ public class RegexWorker {
         String digitsOnly = null;
         
         if (telnetText.contains("Taking over link-dead copy.") || telnetText.contains("You already have an active copy. Taking it over.")) {
-            flags.put(Flags.LOGGEDIN, true);
+            flags.put(Flag.LOGGEDIN, true);
         }
         
         if (telnetText.contains("You feel crafty enough to try to confuse your enemy again.")) {
-            flags.put(Flags.CONFUSE, true);
+            flags.put(Flag.CONFUSE, true);
         }
         if (telnetText.contains("Your body closes up some of your wounds")) {
-            flags.put(Flags.HEALING, true);
+            flags.put(Flag.HEALING, true);
         }
         
         if (telnetText.contains("The refreshing effects of blood doping have worn off.")) {
-            flags.put(Flags.DOPING, true);
+            flags.put(Flag.DOPING, true);
             
         }
         
         if (telnetText.contains("died.") || telnetText.contains("Corpse of")) {
             log.info("saw corpse!!!");
-            flags.put(Flags.CORPSE, true);
+            flags.put(Flag.CORPSE, true);
         }
         
         if (telnetText.contains("You can only do this while fighting.")) {
-            flags.put(Flags.CONFUSE, false);
+            flags.put(Flag.CONFUSE, false);
             
         }
         if (telnetText.contains("You are fighting")) {
-            flags.put(Flags.CONFUSE, true);
+            flags.put(Flag.CONFUSE, true);
             
         }
         if (telnetText.contains("HP:")) {

@@ -9,17 +9,17 @@ public enum Player {
     INSTANCE;  //only one player can play the client
     private final static Logger log = Logger.getLogger(Player.class.getName());
     private Stats stats = new Stats();
-    private Map<Flags, Boolean> ef = new EnumMap(Flags.class);
+    private Map<Flag, Boolean> ef = new EnumMap(Flag.class);
 
     private Player() {
-        ef.put(Flags.BACKSTAB, false);
-        ef.put(Flags.CONFUSE, false);
-        ef.put(Flags.CORPSE, false);
-        ef.put(Flags.DOPING, false);
-        ef.put(Flags.ENERVATE, false);
-        ef.put(Flags.HEALING, false);
-        ef.put(Flags.HEARTPLUNGE, false);
-        ef.put(Flags.LOGGEDIN, false);
+        ef.put(Flag.BACKSTAB, false);
+        ef.put(Flag.CONFUSE, false);
+        ef.put(Flag.CORPSE, false);
+        ef.put(Flag.DOPING, false);
+        ef.put(Flag.ENERVATE, false);
+        ef.put(Flag.HEALING, false);
+        ef.put(Flag.HEARTPLUNGE, false);
+        ef.put(Flag.LOGGEDIN, false);
     }
 
     public Stats getStats() {
@@ -30,16 +30,16 @@ public enum Player {
         this.stats = stats;
     }
 
-    public Map<Flags, Boolean> getFlags() {
+    public Map<Flag, Boolean> getFlags() {
         return ef;
     }
 
-    public void setFlags(Map<Flags, Boolean> newFlags) {
+    public void setFlags(Map<Flag, Boolean> newFlags) {
         ef.putAll(newFlags);
         log.fine(ef.toString());
     }
 
-    public void putFlag(Map<Flags, Boolean> flag) {
+    public void putFlag(Map<Flag, Boolean> flag) {
         ef.putAll(flag);
     }
 }
