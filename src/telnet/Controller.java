@@ -34,7 +34,8 @@ public final class Controller implements Runnable, Observer {
     private ConsoleReader localInputReader = new ConsoleReader();
     private CharacterDataQueueWorker characterDataQueueWorker = new CharacterDataQueueWorker();
     private ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue<>();
-    private EnumSet actions = EnumSet.noneOf(Action.class);
+    //private EnumSet actions = EnumSet.noneOf(Action.class);
+    private Deque<Action> actions = new ArrayDeque<>();
     private Player playerCharacter = Player.INSTANCE;
     private PLayerController cp = new PLayerController();
 
@@ -52,22 +53,14 @@ public final class Controller implements Runnable, Observer {
     private void ExecuteCommandsEnums(long delay) {
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
-        String commandString = null;
-        Deque<Action> commandsQueue = new ArrayDeque<>(actions);
-        String s = null;
-        while (!commandsQueue.isEmpty()) {
+        while (!actions.isEmpty()) {
             try {
-                s = commandsQueue.remove().toString().toLowerCase();
-                if (s == "process") {
-                    s = "process corpse";
-                }
-                commandBytes = s.getBytes();
+                Action a = actions.remove();
+                commandBytes = a.toString().toLowerCase().getBytes();
                 outputStream.write(commandBytes);
                 outputStream.write(13);
                 outputStream.write(10);
                 outputStream.flush();
-                commandString = new String(commandBytes, "UTF-8");
-                log.log(Level.FINE, "{0}\t{1}", new Object[]{commandString, commandBytes});
                 Thread.sleep(delay);   //don't hammer the server???  in microseconds
             } catch (InterruptedException | IOException | NoSuchElementException ex) {
             } finally {
@@ -89,7 +82,8 @@ public final class Controller implements Runnable, Observer {
         long delay = 0;
         Deque<Action> newCommands = new ArrayDeque<>();
         log.fine("updating...");
-        actions = EnumSet.noneOf(Action.class);
+        //actions = EnumSet.noneOf(Action.class);
+        actions = new ArrayDeque<>();
         Deque<Action> newActions = new ArrayDeque<>();
         try {
             if (o instanceof CharacterDataQueueWorker) {
