@@ -31,8 +31,9 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
-            actions.add(Action.BACKSTAB);
-            actions.add(Action.CONFUSE);
+            actions.add(Action.DRAW);
+            actions.add(Action.TRANSFUSE);
+            actions.add(Action.PROCESS);
             return actions;
         }
     },

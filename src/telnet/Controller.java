@@ -16,7 +16,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.PriorityQueue;
 import java.util.Properties;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 import org.apache.commons.net.telnet.TelnetClient;
@@ -55,10 +54,10 @@ public final class Controller implements Runnable, Observer {
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
         String commandString = null;
-        Queue<Action> commandsQueue = new PriorityQueue<>(actions);
+        Deque<Action> commandsQueue = new ArrayDeque<>(actions);
         while (!commandsQueue.isEmpty()) {
             try {
-                commandBytes = commandsQueue.remove().toString().getBytes();
+                commandBytes = commandsQueue.remove().toString().toLowerCase().getBytes();
                 outputStream.write(commandBytes);
                 outputStream.write(13);
                 outputStream.write(10);
@@ -87,14 +86,12 @@ public final class Controller implements Runnable, Observer {
         Deque<Action> newCommands = new ArrayDeque<>();
         log.fine("updating...");
         actions = EnumSet.noneOf(Action.class);
-        //EnumSet newActions = EnumSet.noneOf(Action.class);
         Deque<Action> newActions = new ArrayDeque<>();
         try {
             if (o instanceof CharacterDataQueueWorker) {
                 String remoteOutputMessage = characterDataQueueWorker.getFinalData();
                 log.log(Level.FINE, "starting regex..{0}", remoteOutputMessage);
                 newActions = cp.processGameData(remoteOutputMessage);
-//                newCommands = new PriorityQueue<>(newActions);\
                 newCommands = new ArrayDeque<>(newActions);
                 delay = 500;
             }

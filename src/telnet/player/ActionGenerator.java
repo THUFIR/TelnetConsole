@@ -3,7 +3,6 @@ package telnet.player;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Map.Entry;
-import java.util.Queue;
 import java.util.logging.Logger;
 
 public class ActionGenerator {
@@ -18,9 +17,12 @@ public class ActionGenerator {
         Deque<Action> actions = new ArrayDeque<>();
         Flag flag = null;
         for (Entry<Flag, Boolean> entry : Player.INSTANCE.getFlags().entrySet()) {
-            if (entry.getValue()) {
-                flag = entry.getKey();
-                actions.addAll(flag.getActionsForState());
+            if (Flag.LOGGEDIN != entry.getKey()) {
+                if (entry.getValue()) {
+                    flag = entry.getKey();
+                    Player.INSTANCE.setFlag(flag, false);
+                    actions.addAll(flag.getActionsForState());
+                }
             }
         }
         return actions;
