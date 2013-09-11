@@ -1,7 +1,6 @@
 package telnet.player;
 
 import java.util.EnumSet;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class PLayerController {
