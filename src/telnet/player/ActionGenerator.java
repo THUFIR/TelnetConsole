@@ -17,7 +17,7 @@ public class ActionGenerator {
         Deque<Action> actions = new ArrayDeque<>();
         Flag flag = null;
         for (Entry<Flag, Boolean> entry : Player.INSTANCE.getFlags().entrySet()) {
-            if (Flag.LOGGEDIN != entry.getKey()) {
+            if (entry.getKey() != Flag.LOGGEDIN) {
                 if (entry.getValue()) {
                     flag = entry.getKey();
                     Player.INSTANCE.setFlag(flag, false);

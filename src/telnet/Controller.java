@@ -14,7 +14,6 @@ import java.util.EnumSet;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.PriorityQueue;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;

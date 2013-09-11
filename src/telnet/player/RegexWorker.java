@@ -2,7 +2,6 @@ package telnet.player;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -80,7 +79,5 @@ public class RegexWorker {
             } catch (IllegalStateException e) {
             }
         }
-//        Player.INSTANCE.setFlags(flags);  //do both
-        //PlayerCharacter.INSTANCE.setStats(stats);
     }
 }
