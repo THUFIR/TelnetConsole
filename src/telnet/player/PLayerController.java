@@ -22,6 +22,7 @@ public class PLayerController {
             if (entry.getKey() != Flag.LOGGEDIN) {
                 if (entry.getValue()) {
                     flag = entry.getKey();
+                    log.info("detected\t" + flag);
                     player.setFlag(flag, false);
                     actions.addAll(flag.getActionsForState());
                 }

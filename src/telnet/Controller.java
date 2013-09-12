@@ -10,7 +10,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.EnumSet;
 import java.util.NoSuchElementException;
 import java.util.Observable;
 import java.util.Observer;
@@ -91,7 +90,7 @@ public final class Controller implements Runnable, Observer {
                 log.log(Level.FINE, "starting regex..{0}", remoteOutputMessage);
                 newActions = cp.processGameData(remoteOutputMessage);
                 newCommands = new ArrayDeque<>(newActions);
-                delay = 500;
+                delay = 5;
             }
             actions.addAll(newCommands);
             ExecuteCommandsEnums(delay);

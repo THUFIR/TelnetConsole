@@ -10,10 +10,6 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
-            Action b = new Action("backstab");
-            Action c = new Action("confuse");
-            actions.add(b);
-            actions.add(c);
             return actions;
         }
     },
@@ -21,11 +17,7 @@ public enum Flag {
 
         @Override
         Deque<Action> getActionsForState() {
-             Deque<Action> actions = new ArrayDeque<>();
-            Action b = new Action("backstab");
-            Action c = new Action("confuse");
-            actions.add(b);
-            actions.add(c);
+            Deque<Action> actions = new ArrayDeque<>();
             return actions;
         }
     },
@@ -34,10 +26,11 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
-            Action b = new Action("backstab");
-            Action c = new Action("confuse");
-            actions.add(b);
-            actions.add(c);
+            Action d = new Action("draw");
+            Action t = new Action("transfuse");
+            Action p = new Action("process corpse");
+            actions.add(d);
+            actions.add(p);
             return actions;
         }
     },
@@ -46,10 +39,8 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
-            Action b = new Action("backstab");
-            Action c = new Action("confuse");
-            actions.add(b);
-            actions.add(c);
+            Action e = new Action("endorphine 5");
+            actions.add(e);
             return actions;
         }
     },
@@ -58,10 +49,6 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
-            Action b = new Action("backstab");
-            Action c = new Action("confuse");
-            actions.add(b);
-            actions.add(c);
             return actions;
         }
     },
@@ -70,10 +57,6 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
-            Action b = new Action("backstab");
-            Action c = new Action("confuse");
-            actions.add(b);
-            actions.add(c);
             return actions;
         }
     },
@@ -82,10 +65,6 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
-            Action b = new Action("backstab");
-            Action c = new Action("confuse");
-            actions.add(b);
-            actions.add(c);
             return actions;
         }
     },
@@ -94,6 +73,22 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
+            return actions;
+        }
+    },    FIGHTING() {
+
+        @Override
+        Deque<Action> getActionsForState() {
+            Deque<Action> actions = new ArrayDeque<>();
+            Action a = new Action("confuse");
+            Action b = new Action("backstab");
+            Action h = new Action("heartplunge");
+            Action e = new Action("enervate");
+            actions.add(b);
+            actions.add(a);
+            actions.add(b);
+            actions.add(h);
+            actions.add(e);
             return actions;
         }
     };
