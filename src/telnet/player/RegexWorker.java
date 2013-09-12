@@ -50,11 +50,13 @@ public class RegexWorker {
         }
 
         if (telnetText.contains("confusing the hell out of")) {
+            log.info("trying to confuse");
             Pattern pattern = Pattern.compile("(\\w+)");  //(\w+)\.
             Matcher matcher = pattern.matcher(telnetText);
             String enemy = null;
             while (matcher.find()) {
                 enemy = matcher.group();
+                log.info(enemy);
             }
             stats = player.getStats();
             stats.setEnemy(enemy);
