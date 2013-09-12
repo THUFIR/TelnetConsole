@@ -31,8 +31,11 @@ public enum Flag {
             Action draw = new Action("draw");
             Action transfuse = new Action("transfuse");
             Action process = new Action("process corpse");
+            Action getAll = new Action("get all");
             actions.add(draw);
+            actions.add(transfuse);
             actions.add(process);
+            actions.add(getAll);
             return actions;
         }
     },

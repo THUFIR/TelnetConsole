@@ -27,7 +27,10 @@ public enum Player {
     }
 
     public void setStats(StatsBean stats) {
-        this.stats = stats;
+        if (stats.getBlood() > 0) {
+            this.stats = stats;
+            this.setFlag(Flag.FIGHTING, true);
+        }
     }
 
     public Map<Flag, Boolean> getFlags() {

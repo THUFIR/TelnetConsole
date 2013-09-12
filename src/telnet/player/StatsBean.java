@@ -14,6 +14,7 @@ public class StatsBean {
     private int darts = 0;
     private int blood = 0;
     private int grafts = 0;
+    private String enemy;
 
     public StatsBean() {
     }
@@ -75,12 +76,11 @@ public class StatsBean {
                     blood = Integer.parseInt(val);
                     break;
                 case "grafts":
-                  grafts=Integer.parseInt(val);
+                    grafts = Integer.parseInt(val);
                     break;
             }
         }
     }
-
 
     public int getHp() {
         return hp;
@@ -125,7 +125,7 @@ public class StatsBean {
     public int getNone() {
         return none;
     }
-    
+
     public void setNone(int none) {
         this.none = none;
     }
@@ -158,5 +158,13 @@ public class StatsBean {
         return "\n\nhp\t" + hp + "\tcp\t" + cp + "\tadrenaline\t" + adrenaline
                 + "\nendorphine\t" + endorphine + "\t\tberserk\t" + berserk
                 + "\nenemy\t" + none;
+    }
+
+    public void setEnemy(String enemy) {
+        this.enemy = enemy;
+    }
+
+    public String getEnemy() {
+        return enemy;
     }
 }

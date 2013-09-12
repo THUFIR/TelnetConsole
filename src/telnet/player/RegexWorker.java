@@ -1,7 +1,9 @@
 package telnet.player;
 
 import java.util.AbstractMap;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -18,14 +20,48 @@ public class RegexWorker {
     public RegexWorker() {
     }
 
-    public void parseAndUpdatePlayerCharacter(String telnetText) {
+    public Deque<Action> parseAndUpdatePlayerCharacter(String telnetText) {
         log.fine(telnetText);
+        Deque<Action> dq = new ArrayDeque<>();
+
         stats = Player.INSTANCE.getStats();
         String command = null;
         String keyName = null;
         String keyVal = null;
         String digitsOnly = null;
 
+        /*
+         *                   String str = "asdf asdf  asd12f1 ";  
+        Pattern p = Pattern.compile("\\s(\\w+)$");  
+        Matcher m = p.matcher(str.trim());  
+        while(m.find()){  
+        System.out.println( m.group());  
+        } 
+         */
+
+
+        if (telnetText.contains("shoulder nerve firmly with one hand")) {
+            Pattern pattern = Pattern.compile("(//[^ ]*$)");
+            Matcher matcher = pattern.matcher(telnetText);
+            while (matcher.find()) {
+                String foo = matcher.group(1);
+                log.info(foo);
+            }
+        }
+
+        if (telnetText.contains("confusing the hell out of")) {
+            Pattern pattern = Pattern.compile("(\\w+)");  //(\w+)\.
+            Matcher matcher = pattern.matcher(telnetText);
+            String enemy = null;
+            while (matcher.find()) {
+                enemy = matcher.group();
+            }
+            stats = player.getStats();
+            stats.setEnemy(enemy);
+            player.setStats(stats);
+            Action b = new Action("backstab " + enemy);
+            dq.add(b);
+        }
         if (telnetText.contains("Taking over link-dead copy.") || telnetText.contains("You already have an active copy. Taking it over.")) {
             player.setFlag(Flag.LOGGEDIN, true);
             //          flags.put(Flag.LOGGEDIN, true);
@@ -77,9 +113,9 @@ public class RegexWorker {
                 }
                 stats = new StatsBean(stringEntries);
                 player.setStats(stats);
-                player.setFlag(Flag.FIGHTING, true);
             } catch (IllegalStateException e) {
             }
         }
+        return dq;
     }
 }
