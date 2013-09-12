@@ -18,6 +18,8 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
+            Action confuse = new Action("confuse");
+            actions.add(confuse);
             return actions;
         }
     },
@@ -26,11 +28,11 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
-            Action d = new Action("draw");
-            Action t = new Action("transfuse");
-            Action p = new Action("process corpse");
-            actions.add(d);
-            actions.add(p);
+            Action draw = new Action("draw");
+            Action transfuse = new Action("transfuse");
+            Action process = new Action("process corpse");
+            actions.add(draw);
+            actions.add(process);
             return actions;
         }
     },
@@ -39,8 +41,8 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
-            Action e = new Action("endorphine 5");
-            actions.add(e);
+            Action endorphine = new Action("endorphine 5");
+            actions.add(endorphine);
             return actions;
         }
     },
@@ -57,6 +59,8 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
+            Action enervate = new Action("enervate");
+            actions.add(enervate);
             return actions;
         }
     },
@@ -65,6 +69,8 @@ public enum Flag {
         @Override
         Deque<Action> getActionsForState() {
             Deque<Action> actions = new ArrayDeque<>();
+            Action heartplunge = new Action("heartplunge");
+            actions.add(heartplunge);
             return actions;
         }
     },
@@ -75,7 +81,7 @@ public enum Flag {
             Deque<Action> actions = new ArrayDeque<>();
             return actions;
         }
-    },    FIGHTING() {
+    }, FIGHTING() {
 
         @Override
         Deque<Action> getActionsForState() {

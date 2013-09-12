@@ -3,7 +3,7 @@ package telnet.player;
 import java.util.List;
 import java.util.Map.Entry;
 
-public class Stats {
+public class StatsBean {
 
     private int hp = 0;
     private int cp = 0;
@@ -15,10 +15,10 @@ public class Stats {
     private int blood = 0;
     private int grafts = 0;
 
-    public Stats() {
+    public StatsBean() {
     }
 
-    public Stats(List<Entry> stringEntries) {
+    public StatsBean(List<Entry> stringEntries) {
 
         String key = null, val = null;
         for (Entry e : stringEntries) {

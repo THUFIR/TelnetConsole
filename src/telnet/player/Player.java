@@ -8,7 +8,7 @@ public enum Player {
 
     INSTANCE;  //only one player can play the client
     private final static Logger log = Logger.getLogger(Player.class.getName());
-    private Stats stats = new Stats();
+    private StatsBean stats = new StatsBean();
     private Map<Flag, Boolean> flagMap = new EnumMap(Flag.class);
 
     private Player() {
@@ -22,11 +22,11 @@ public enum Player {
         flagMap.put(Flag.LOGGEDIN, false);
     }
 
-    public Stats getStats() {
+    public StatsBean getStats() {
         return stats;
     }
 
-    public void setStats(Stats stats) {
+    public void setStats(StatsBean stats) {
         this.stats = stats;
     }
 

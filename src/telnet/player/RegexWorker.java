@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class RegexWorker {
 
     private final static Logger log = Logger.getLogger(RegexWorker.class.getName());
-    private Stats stats = new Stats();// = PlayerCharacter.INSTANCE.getStats();
+    private StatsBean stats = new StatsBean();// = PlayerCharacter.INSTANCE.getStats();
     private Player player = Player.INSTANCE;
 
     public RegexWorker() {
@@ -75,7 +75,7 @@ public class RegexWorker {
                         digitsOnly = m.group(1);
                     }
                 }
-                stats = new Stats(stringEntries);
+                stats = new StatsBean(stringEntries);
                 player.setStats(stats);
                 player.setFlag(Flag.FIGHTING, true);
             } catch (IllegalStateException e) {
