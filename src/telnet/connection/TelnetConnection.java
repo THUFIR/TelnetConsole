@@ -1,12 +1,6 @@
-package telnet;
-
-
-//make this an API
-
+package telnet.connection;
 
 import java.util.logging.Level;
-import telnet.player.Player;
-import static java.lang.System.out;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
@@ -21,17 +15,12 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 import org.apache.commons.net.telnet.TelnetClient;
-import telnet.connection.CharacterDataQueueWorker;
-import telnet.connection.UserActions;
-import telnet.connection.ConsoleReader;
-import telnet.connection.InputStreamWorker;
-import telnet.connection.PropertiesReader;
 import telnet.player.Action;
-import telnet.player.PLayerController;
+import telnet.player.Player;
 
-public final class Controller implements Runnable, Observer {
+public final class TelnetConnection implements Observer {
 
-    private Logger log = Logger.getLogger(Controller.class.getName());
+    private Logger log = Logger.getLogger(TelnetConnection.class.getName());
     private TelnetClient telnetClient = new TelnetClient();
     private InputStreamWorker remoteInputStreamWorker = new InputStreamWorker();
     private ConsoleReader localInputReader = new ConsoleReader();
@@ -40,9 +29,14 @@ public final class Controller implements Runnable, Observer {
     //private EnumSet actions = EnumSet.noneOf(Action.class);
     private Deque<Action> actions = new ArrayDeque<>();
     private Player playerCharacter = Player.INSTANCE;
-    private PLayerController cp = new PLayerController();
+    //private PlayerController playerController = new PlayerController();
 
-    private Controller() {
+    public TelnetConnection() throws UnknownHostException, SocketException, IOException {
+        Properties props = PropertiesReader.getProps();
+        InetAddress host = InetAddress.getByName(props.getProperty("host"));
+        int port = Integer.parseInt(props.getProperty("port"));
+        telnetClient.connect(host, port);
+//        startReadPrintThreads();
     }
 
     public void startReadPrintThreads() throws SocketException, IOException {
@@ -92,7 +86,7 @@ public final class Controller implements Runnable, Observer {
             if (o instanceof CharacterDataQueueWorker) {
                 String remoteOutputMessage = characterDataQueueWorker.getFinalData();
                 log.log(Level.FINE, "starting regex..{0}", remoteOutputMessage);
-                newActions = cp.processGameData(remoteOutputMessage);
+                //     newActions = playerController.processGameData(remoteOutputMessage);
                 newCommands = new ArrayDeque<>(newActions);
                 delay = 5;
             }
@@ -112,24 +106,8 @@ public final class Controller implements Runnable, Observer {
         }
     }
 
-    @Override
-    public void run() {
-        try {
-            Properties props = PropertiesReader.getProps();
-            InetAddress host = InetAddress.getByName(props.getProperty("host"));
-            int port = Integer.parseInt(props.getProperty("port"));
-            telnetClient.connect(host, port);
-            startReadPrintThreads();
-        } catch (UnknownHostException ex) {
-            out.println(ex);
-        } catch (SocketException ex) {
-            out.println(ex);
-        } catch (IOException ex) {
-            out.println(ex);
-        }
-    }
-
-    public static void main(String[] args) throws SocketException, IOException {
-        new Controller().run();
+    public String getGameData() {
+        String s = remoteCharDataQueue.toString();
+        return s;
     }
 }
