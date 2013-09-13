@@ -1,5 +1,9 @@
 package telnet;
 
+
+//make this an API
+
+
 import java.util.logging.Level;
 import telnet.player.Player;
 import static java.lang.System.out;
