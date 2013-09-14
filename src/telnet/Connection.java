@@ -1,6 +1,5 @@
-package telnet.connection;
+package telnet;
 
-import java.util.logging.Level;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
@@ -15,28 +14,29 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Logger;
 import org.apache.commons.net.telnet.TelnetClient;
+import telnet.connection.CharacterDataQueueWorker;
+import telnet.connection.ConsoleReader;
+import telnet.connection.InputStreamWorker;
+import telnet.connection.PropertiesReader;
 import telnet.player.Action;
-import telnet.player.Player;
+import telnet.player.PlayerController;
 
-public final class TelnetConnection implements Observer {
+public  class Connection implements Observer, Runnable {
 
-    private Logger log = Logger.getLogger(TelnetConnection.class.getName());
+    private Logger log = Logger.getLogger(Connection.class.getName());
     private TelnetClient telnetClient = new TelnetClient();
     private InputStreamWorker remoteInputStreamWorker = new InputStreamWorker();
     private ConsoleReader localInputReader = new ConsoleReader();
     private CharacterDataQueueWorker characterDataQueueWorker = new CharacterDataQueueWorker();
     private ConcurrentLinkedQueue<Character> remoteCharDataQueue = new ConcurrentLinkedQueue<>();
-    //private EnumSet actions = EnumSet.noneOf(Action.class);
     private Deque<Action> actions = new ArrayDeque<>();
-    private Player playerCharacter = Player.INSTANCE;
-    //private PlayerController playerController = new PlayerController();
+    private PlayerController playerController = new PlayerController();
 
-    public TelnetConnection() throws UnknownHostException, SocketException, IOException {
+    public Connection() throws UnknownHostException, SocketException, IOException {
         Properties props = PropertiesReader.getProps();
         InetAddress host = InetAddress.getByName(props.getProperty("host"));
         int port = Integer.parseInt(props.getProperty("port"));
         telnetClient.connect(host, port);
-//        startReadPrintThreads();
     }
 
     public void startReadPrintThreads() throws SocketException, IOException {
@@ -47,28 +47,24 @@ public final class TelnetConnection implements Observer {
         characterDataQueueWorker.addObserver(this);
     }
 
-    private void ExecuteCommandsEnums(long delay) {
+    private void sendActions(long delay) {
         byte[] commandBytes = null;
         OutputStream outputStream = telnetClient.getOutputStream();
         while (!actions.isEmpty()) {
             try {
-                Action a = actions.remove();
-                commandBytes = a.toString().toLowerCase().getBytes();
-                outputStream.write(commandBytes);
-                outputStream.write(13);
-                outputStream.write(10);
-                outputStream.flush();
-                Thread.sleep(delay);   //don't hammer the server???  in microseconds
+                Action action = actions.remove();
+                sendAction(action);
+                Thread.sleep(delay);
             } catch (InterruptedException | IOException | NoSuchElementException ex) {
             } finally {
             }
         }
     }
 
-    private void executeUserAction(UserActions cmd) throws IOException {
-        byte[] commandBytes = cmd.getCommand().getBytes();
+    private void sendAction(Action action) throws IOException {
+        byte[] actionBytes = action.getCommand().getBytes();
         OutputStream outputStream = telnetClient.getOutputStream();
-        outputStream.write(commandBytes);
+        outputStream.write(actionBytes);
         outputStream.write(13);
         outputStream.write(10);
         outputStream.flush();
@@ -77,37 +73,39 @@ public final class TelnetConnection implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         long delay = 0;
-        Deque<Action> newCommands = new ArrayDeque<>();
-        log.fine("updating...");
-        //actions = EnumSet.noneOf(Action.class);
-        actions = new ArrayDeque<>();
-        Deque<Action> newActions = new ArrayDeque<>();
         try {
             if (o instanceof CharacterDataQueueWorker) {
                 String remoteOutputMessage = characterDataQueueWorker.getFinalData();
-                log.log(Level.FINE, "starting regex..{0}", remoteOutputMessage);
-                //     newActions = playerController.processGameData(remoteOutputMessage);
-                newCommands = new ArrayDeque<>(newActions);
+                actions = playerController.processGameData(remoteOutputMessage);
                 delay = 5;
             }
-            actions.addAll(newCommands);
-            ExecuteCommandsEnums(delay);
+            sendActions(delay);
         } catch (NullPointerException npe) {
             log.fine(npe.toString());
         }
 
         if (o instanceof ConsoleReader) {
             try {
-                String commandString = localInputReader.getCommand();
-                UserActions action = new UserActions(commandString);
-                executeUserAction(action);
+                String userInput = localInputReader.getCommand();
+                Action action = new Action(userInput);
+                sendAction(action);
             } catch (IOException ex) {
             }
         }
     }
 
-    public String getGameData() {
-        String s = remoteCharDataQueue.toString();
-        return s;
+    
+    
+    public static void main(String[] args) throws  UnknownHostException, SocketException, IOException {
+        new Connection().run();
+    }
+
+    @Override
+    public void run() {
+        try {
+            startReadPrintThreads();
+        } catch (SocketException ex) {
+        } catch (IOException ex) {
+        }
     }
 }
