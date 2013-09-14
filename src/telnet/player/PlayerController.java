@@ -10,13 +10,13 @@ public class PlayerController {
     private final static Logger log = Logger.getLogger(PlayerController.class.getName());
     private Player player = Player.INSTANCE;  //single player only, ever
     private RegexWorker rw = new RegexWorker();
-    // private  TelnetConnection tc;
 
     public PlayerController() {
     }
 
     public Deque<Action> processGameData(String gameData) {
         Deque<Action> actions = rw.parseAndUpdatePlayerCharacter(gameData);
+        log.fine(actions.toString());
         Flag flag = null;
         for (Entry<Flag, Boolean> entry : player.getFlags().entrySet()) {
             if (entry.getKey() != Flag.LOGGEDIN) {

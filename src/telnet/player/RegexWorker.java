@@ -22,23 +22,13 @@ public class RegexWorker {
 
     public Deque<Action> parseAndUpdatePlayerCharacter(String telnetText) {
         log.fine(telnetText);
-        Deque<Action> dq = new ArrayDeque<>();
+        Deque<Action> actions = new ArrayDeque<>();
 
         stats = Player.INSTANCE.getStats();
         String command = null;
         String keyName = null;
         String keyVal = null;
         String digitsOnly = null;
-
-        /*
-         *                   String str = "asdf asdf  asd12f1 ";  
-        Pattern p = Pattern.compile("\\s(\\w+)$");  
-        Matcher m = p.matcher(str.trim());  
-        while(m.find()){  
-        System.out.println( m.group());  
-        } 
-         */
-
 
         if (telnetText.contains("shoulder nerve firmly with one hand")) {
             Pattern pattern = Pattern.compile("(//[^ ]*$)");
@@ -62,7 +52,7 @@ public class RegexWorker {
             stats.setEnemy(enemy);
             player.setStats(stats);
             Action b = new Action("backstab " + enemy);
-            dq.add(b);
+            actions.add(b);
         }
         if (telnetText.contains("Taking over link-dead copy.") || telnetText.contains("You already have an active copy. Taking it over.")) {
             player.setFlag(Flag.LOGGEDIN, true);
@@ -118,6 +108,6 @@ public class RegexWorker {
             } catch (IllegalStateException e) {
             }
         }
-        return dq;
+        return actions;
     }
 }
